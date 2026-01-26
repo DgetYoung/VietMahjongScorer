@@ -11,10 +11,10 @@
     margin: auto;
     line-height: 1;
   }
-  .title h1{
+  #title h1{
     font-size: 48px;
   }
-  .title, .element{
+  #title, .element{
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -53,15 +53,32 @@
     border: 2px solid black;
     z-index: 90;
   }
-  .flowers, .openhand, .closedhand{
+  #flowers, #openhand, #closedhand{
     display: flex;
     border: 1px solid black;
     height: 100px;
   }
+  #flowerboard{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: lightgrey;
+    opacity: 0.5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .flowerwindow{
+    position: relative;
+    background-color: white;
+    border: 2px solid black;
+  }
 </style>
 </head>
 <body>
-<div class="title">
+<div id="title">
   <h1>Scorer</h1>
   <img src="logo.png" alt="SVMC logo" width="100" height="36">
 </div>
@@ -121,13 +138,20 @@
   </ul>
 </div>
 <p>Flowers:</p>
-<div class="flowers">
-</div>
+<a href="#flowerboard"><div id="flowers">
+</div></a>
 <p>Open groups:</p>
-<div class="openhand">
-</div>
+<a href="#tileboard"><div id="openhand">
+</div></a>
 <p>Closed groups:</p>
-<div class="closedhand">
+<a href="#tileboard"><div id="closedhand">
+</div></a>
+
+
+<div id="flowerboard">
+  <div class="flowerwindow">
+    Test
+  </div>
 </div>
 </body>
 </html>
