@@ -62,7 +62,7 @@
     border: 1px solid black;
     height: 100px;
   }
-  #flowerboard{
+  #flowerboard, #scoring{
     position: fixed;
     top: 0;
     left: 0;
@@ -87,6 +87,14 @@
   .close{
     margin-top: auto;
     margin-bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    padding: 5px;
+    border: 2px solid black;
+    width: 100px;
+  }
+  #score{
     margin-left: auto;
     margin-right: auto;
     text-align: center;
@@ -165,11 +173,19 @@
 <p>Closed groups:</p>
 <a href="#tileboard"><div id="closedhand">
 </div></a>
+<a href="#scoring"><div id="score">Score</div></a>
 
 
 <div id="flowerboard">
   <div class="flowerwindow">
     <p>This is where you will select flowers.</p>
+    <a href="#"><div class="close">Done</div></a>
+  </div>
+</div>
+
+<div id="scoring">
+  <div class="scoringwindow">
+    <p>This is where you will see scoring output.</p>
     <a href="#"><div class="close">Done</div></a>
   </div>
 </div>
