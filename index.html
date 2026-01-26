@@ -62,7 +62,7 @@
     border: 1px solid black;
     height: 100px;
   }
-  #flowerboard, #scoring{
+  #flowerboard, #tileboard, #scoring{
     position: fixed;
     top: 0;
     left: 0;
@@ -73,7 +73,7 @@
     justify-content: center;
     align-items: center;
   }
-  .flowerwindow, .scoringwindow{
+  .modalwindow{
     position: relative;
     background-color: white;
     padding: 5px;
@@ -177,14 +177,19 @@
 
 
 <div id="flowerboard">
-  <div class="flowerwindow">
+  <div class="modalwindow">
     <p>This is where you will select flowers.</p>
     <a href="#"><div class="close">Done</div></a>
   </div>
 </div>
-
+<div id="tileboard">
+  <div class="modalwindow">
+    <p>This is where you will select tiles.</p>
+    <a href="#"><div class="close">Done</div></a>
+  </div>
+</div>
 <div id="scoring">
-  <div class="scoringwindow">
+  <div class="modalwindow">
     <p>This is where you will see scoring output.</p>
     <a href="#"><div class="close">Done</div></a>
   </div>
