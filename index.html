@@ -10,6 +10,10 @@
     max-width: 300px;
     margin: auto;
   }
+  .element{
+    display: flex;
+    justify-content: space-between;
+  }
   .label{
     display: inline-block;
   }
@@ -53,43 +57,47 @@
 </head>
 <body>
 <h1>Scorer</h1>
-<p class="label">Round wind: </p>
-<ul class="selection">
-  <li>
-    <input type="radio" id="east" name="roundwind" checked="checked">
-    <label for="east">E</label>
-  </li>
-  <li>
-    <input type="radio" id="south" name="roundwind">
-    <label for="south">S</label>
-  </li>
-  <li>
-    <input type="radio" id="west" name="roundwind">
-    <label for="west">W</label>
-  </li>
-  <li>
-    <input type="radio" id="north" name="roundwind">
-    <label for="north">N</label>
-  </li>
-</ul>
-<p class="label">Seat wind: </p>
-<ul class="selection">
-  <li>
-    <input type="radio" id="east" name="seatwind" checked="checked">
-    <label for="east">E</label>
-  </li>
-  <li>
-    <input type="radio" id="south" name="seatwind">
-    <label for="south">S</label>
-  </li>
-  <li>
-    <input type="radio" id="west" name="seatwind">
-    <label for="west">W</label>
-  </li>
-  <li>
-    <input type="radio" id="north" name="seatwind">
-    <label for="north">N</label>
-  </li>
-</ul>
+<div class="element">
+  <p class="label">Round wind: </p>
+  <ul class="selection">
+    <li>
+      <input type="radio" id="east" name="roundwind" checked="checked">
+      <label for="east">E</label>
+    </li>
+    <li>
+      <input type="radio" id="south" name="roundwind">
+      <label for="south">S</label>
+    </li>
+    <li>
+      <input type="radio" id="west" name="roundwind">
+      <label for="west">W</label>
+    </li>
+    <li>
+      <input type="radio" id="north" name="roundwind">
+      <label for="north">N</label>
+    </li>
+  </ul>
+</div>
+<div class="element">
+  <p class="label">Seat wind: </p>
+  <ul class="selection">
+    <li>
+      <input type="radio" id="east" name="seatwind" checked="checked">
+      <label for="east">E</label>
+    </li>
+    <li>
+      <input type="radio" id="south" name="seatwind">
+      <label for="south">S</label>
+    </li>
+    <li>
+      <input type="radio" id="west" name="seatwind">
+      <label for="west">W</label>
+    </li>
+    <li>
+      <input type="radio" id="north" name="seatwind">
+      <label for="north">N</label>
+    </li>
+  </ul>
+</div>
 </body>
 </html>
