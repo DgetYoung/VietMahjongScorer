@@ -7,13 +7,17 @@ const FLOWER_MODE = 5;
 
 var mode = HAND_MODE;
 
-var flowers = [];
-var open = [];
-var closed = [];
-
 var flowerhand = document.getElementById("flowerdhand");
 var openhand = document.getElementById("openhand");
 var closedhand = document.getElementById("closedhand");
+
+var flowerimages = [];
+var openimages = [];
+var closedimages = [];
+
+var flowers = [];
+var open = [];
+var closed = [];
 
 function initialize(){
   for (let i = 0; i < 14; i++){
@@ -26,9 +30,7 @@ function initialize(){
       tile.style.marginLeft = "5px";
     }
     closedhand.appendChild(tile);
-  }
-  for (const child of closedhand.getElementsByTagName("img")) {
-    console.log(child.tagName);
+    closedimages.push(tile);
   }
 }
 
@@ -58,7 +60,7 @@ function sendTile(t){
       console.log(closed.length);
       console.log(("0" + t).slice(-2));
       console.log("graphics/" + ("0" + t).slice(-2) + ".png");
-      closedhand.getElementsByTagName("img")[closed.length].src = "graphics/" + ("0" + t).slice(-2) + ".png";
+      closedimages[closed.length].src = "graphics/" + ("0" + t).slice(-2) + ".png";
       closed.push(t);
       break;
     case CHOW_MODE:
