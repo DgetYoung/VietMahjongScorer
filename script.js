@@ -32,9 +32,6 @@ function initialize(){
     closedhand.appendChild(tile);
     closedimages.push(tile);
   }
-  for (const i of closedimages){
-    console.log(i);
-  }
 }
 
 function addChow(){
@@ -60,9 +57,10 @@ function addFlowers(){
 function sendTile(t){
   switch (mode){
     case HAND_MODE:
-      console.log(closed.length);
-      console.log(("0" + t).slice(-2));
-      console.log("graphics/" + ("0" + t).slice(-2) + ".png");
+      var pos = closed.length;
+      if (!pos){
+        pos = 0;
+      }
       closedimages[closed.length].src = "graphics/" + ("0" + t).slice(-2) + ".png";
       closed.push(t);
       break;
