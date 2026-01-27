@@ -26,6 +26,9 @@ function initialize(){
       tile.style.marginLeft = "5px";
     }
     closedhand.appendChild(tile);
+    for (const child of closedhand.children) {
+      console.log(child.tagName);
+    }
   }
 }
 
