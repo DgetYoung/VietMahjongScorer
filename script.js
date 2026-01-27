@@ -26,9 +26,9 @@ function initialize(){
       tile.style.marginLeft = "5px";
     }
     closedhand.appendChild(tile);
-    for (const child of closedhand.getElementsByTagName("img")) {
-      console.log(child.tagName);
-    }
+  }
+  for (const child of closedhand.getElementsByTagName("img")) {
+    console.log(child.tagName);
   }
 }
 
