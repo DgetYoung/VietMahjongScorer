@@ -61,7 +61,7 @@ function sendTile(t){
       if (!pos){
         pos = 0;
       }
-      console.log(pos);
+      console.log(closed);
       closedimages[pos].src = "graphics/" + ("0" + t).slice(-2) + ".png";
       closed.push(t);
       break;
