@@ -7,7 +7,7 @@ const FLOWER_MODE = 5;
 
 var mode = HAND_MODE;
 
-var flowerhand = document.getElementById("flowerdhand");
+var flowerhand = document.getElementById("flowerhand");
 var openhand = document.getElementById("openhand");
 var closedhand = document.getElementById("closedhand");
 
@@ -17,7 +17,7 @@ var closedimages = [];
 
 var flowers = [];
 var open = [];
-var closed = [];
+var closed = Array.new();
 
 function initialize(){
   for (let i = 0; i < 14; i++){
