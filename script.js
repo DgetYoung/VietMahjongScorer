@@ -15,9 +15,9 @@ var flowerimages = [];
 var openimages = [];
 var closedimages = [];
 
-var flowers = [];
-var open = [];
-var closed = new Array();
+var flowerdata = [];
+var opendata = [];
+var closeddata = [];
 
 function initialize(){
   for (let i = 0; i < 14; i++){
@@ -57,13 +57,10 @@ function addFlowers(){
 function sendTile(t){
   switch (mode){
     case HAND_MODE:
-      var pos = closed.length;
-      if (!pos){
-        pos = 0;
-      }
-      console.log(closed);
+      console.log(closeddata);
+      console.log(closeddata.length);
       closedimages[pos].src = "graphics/" + ("0" + t).slice(-2) + ".png";
-      closed.push(t);
+      closeddata.push(t);
       break;
     case CHOW_MODE:
       break;
