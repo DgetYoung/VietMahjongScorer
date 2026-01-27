@@ -1,3 +1,5 @@
+
+
 function initialize(){
   for (let i = 0; i < 14; i++){
     var tile = document.createElement("img");
@@ -11,4 +13,28 @@ function initialize(){
     var closedhand = document.getElementById("closedhand");
     closedhand.appendChild(tile);
   }
+}
+
+function addChow(){
+  return;
+}
+
+function addPung(){
+  return;
+}
+
+function addOpenQuad(){
+  return;
+}
+
+function addClosedQuad(){
+  return;
+}
+
+function addFlowers(){
+  return;
+}
+
+function sendTile(t){
+  return;
 }
