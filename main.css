@@ -54,12 +54,29 @@ a {
   border: 2px solid black;
   z-index: 90;
 }
-#flowers, #openhand, #closedhand{
+#handspace{
   display: flex;
   border: 1px solid black;
-  height: 100px;
+  height: 200px;
 }
-#flowerboard, #tileboard, #scoring{
+#score{
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  padding: 5px;
+  border: 2px solid black;
+  width: 100px;
+
+
+/*
+.modalwindow{
+  position: relative;
+  background-color: white;
+  padding: 5px;
+  border: 2px solid black;
+  width: 300px;
+}
+#flowerboard{
   position: fixed;
   top: 0;
   left: 0;
@@ -69,13 +86,6 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.modalwindow{
-  position: relative;
-  background-color: white;
-  padding: 5px;
-  border: 2px solid black;
-  width: 300px;
 }
 #flowerboard:not(:target), #tileboard:not(:target), #scoring:not(:target){
   visibility: hidden;
@@ -91,10 +101,4 @@ a {
   border: 2px solid black;
   width: 100px;
 }
-#score{
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-  padding: 5px;
-  border: 2px solid black;
-  width: 100px;
+*/
