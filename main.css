@@ -9,6 +9,7 @@ a {
   color: inherit;
 }
 #title h1{
+  font-family: "Calistoga", serif;
   font-size: 48px;
 }
 #title, .element{
