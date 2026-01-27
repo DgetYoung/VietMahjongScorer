@@ -17,7 +17,7 @@ var closedimages = [];
 
 var flowers = [];
 var open = [];
-var closed = Array.new();
+var closed = new Array();
 
 function initialize(){
   for (let i = 0; i < 14; i++){
