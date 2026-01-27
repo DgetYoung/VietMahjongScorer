@@ -6,7 +6,7 @@ function initialize(){
     tile.style.width = "20px";
     tile.style.marginBottom = "5px";
     if (i == 13){
-      tile.style.marginLeft = "5px";
+      tile.style.marginLeft = "8px";
     }
     var closedhand = document.getElementById("closedhand");
     closedhand.appendChild(tile);
