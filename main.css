@@ -66,9 +66,6 @@ a {
   padding: 5px;
   border: 2px solid black;
   width: 100px;
-
-
-/*
 .modalwindow{
   position: relative;
   background-color: white;
@@ -76,7 +73,7 @@ a {
   border: 2px solid black;
   width: 300px;
 }
-#flowerboard{
+#scoring{
   position: fixed;
   top: 0;
   left: 0;
@@ -87,7 +84,7 @@ a {
   justify-content: center;
   align-items: center;
 }
-#flowerboard:not(:target), #tileboard:not(:target), #scoring:not(:target){
+#scoring:not(:target){
   visibility: hidden;
   opacity: 0;
 }
@@ -101,4 +98,3 @@ a {
   border: 2px solid black;
   width: 100px;
 }
-*/
