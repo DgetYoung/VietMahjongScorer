@@ -32,6 +32,9 @@ function initialize(){
     closedhand.appendChild(tile);
     closedimages.push(tile);
   }
+  for (const i of closedimages){
+    console.log(i);
+  }
 }
 
 function addChow(){
