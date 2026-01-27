@@ -4,7 +4,6 @@ function initialize(){
     tile.src = "graphics/99.png";
     tile.style.height = "26px";
     tile.style.width = "20px";
-    tile.style.marginBottom = "5px";
     if (i == 13){
       tile.style.marginLeft = "8px";
     }
