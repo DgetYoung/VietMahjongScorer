@@ -4,9 +4,9 @@ function initialize(){
     tile.src = "graphics/99.png";
     tile.style.height = "26px";
     tile.style.width = "20px";
-    tile.style.margin.bottom = "5px";
+    tile.style.marginBottom = "5px";
     if (i == 13){
-      tile.style.margin.left = "5px";
+      tile.style.marginLeft = "5px";
     }
     var closedhand = document.getElementById("closedhand");
     closedhand.appendChild(tile);
