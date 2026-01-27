@@ -26,7 +26,7 @@ function initialize(){
       tile.style.marginLeft = "5px";
     }
     closedhand.appendChild(tile);
-    for (const child of closedhand.children) {
+    for (const child of closedhand.getElementsByTagName("img")) {
       console.log(child.tagName);
     }
   }
@@ -55,7 +55,7 @@ function addFlowers(){
 function sendTile(t){
   switch (mode){
     case HAND_MODE:
-      closedhand.children[closed.length].src = "graphics/" + ("0" + t).slice(-2) + ".png";
+      closedhand.getElementsByTagName("img")[closed.length].src = "graphics/" + ("0" + t).slice(-2) + ".png";
       console.log("graphics/" + ("0" + t).slice(-2) + ".png");
       closed.push(t);
       break;
