@@ -78,16 +78,16 @@ a{
   justify-content: center;
   align-items: center;
 }
+#scoring:not(:target){
+  visibility: hidden;
+  opacity: 0;
+}
 .modalcontent{
   position: relative;
   background-color: white;
   padding: 5px;
   border: 2px solid black;
   width: 300px;
-}
-#scoring:not(:target){
-  visibility: hidden;
-  opacity: 0;
 }
 .close{
   margin-top: auto;
