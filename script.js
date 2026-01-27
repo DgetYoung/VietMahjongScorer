@@ -5,6 +5,6 @@ function initialize(){
     tile.style.height = "26px";
     tile.style.width = "20px";
     var closedhand = document.getElementById("closedhand");
-    closedhand.appendChild(img);
+    closedhand.appendChild(tile);
   }
 }
