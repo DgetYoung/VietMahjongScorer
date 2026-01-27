@@ -55,8 +55,10 @@ function addFlowers(){
 function sendTile(t){
   switch (mode){
     case HAND_MODE:
-      closedhand.getElementsByTagName("img")[closed.length].src = "graphics/" + ("0" + t).slice(-2) + ".png";
+      console.log(closed.length);
+      console.log(("0" + t).slice(-2));
       console.log("graphics/" + ("0" + t).slice(-2) + ".png");
+      closedhand.getElementsByTagName("img")[closed.length].src = "graphics/" + ("0" + t).slice(-2) + ".png";
       closed.push(t);
       break;
     case CHOW_MODE:
