@@ -67,35 +67,3 @@ a{
   border: 2px solid black;
   width: 100px;
 }
-#scoring{
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.125);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-#scoring:not(:target){
-  visibility: hidden;
-  opacity: 0;
-}
-.modalcontent{
-  position: relative;
-  background-color: white;
-  padding: 5px;
-  border: 2px solid black;
-  width: 300px;
-}
-.close{
-  margin-top: auto;
-  margin-bottom: 0;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-  padding: 5px;
-  border: 2px solid black;
-  width: 100px;
-}
