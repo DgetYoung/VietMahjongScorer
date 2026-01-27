@@ -1,4 +1,19 @@
+const HAND_MODE = 0;
+const CHOW_MODE = 1;
+const PUNG_MODE = 2;
+const OPEN_QUAD_MODE = 3;
+const CLOSED_QUAD_MODE = 4;
+const FLOWER_MODE = 5;
 
+var mode = HAND_MODE;
+
+var flowers = [];
+var open = [];
+var closed = [];
+
+var flowerhand = document.getElementById("flowerdhand");
+var openhand = document.getElementById("openhand");
+var closedhand = document.getElementById("closedhand");
 
 function initialize(){
   for (let i = 0; i < 14; i++){
@@ -10,31 +25,46 @@ function initialize(){
     if (i == 13){
       tile.style.marginLeft = "5px";
     }
-    var closedhand = document.getElementById("closedhand");
     closedhand.appendChild(tile);
   }
 }
 
 function addChow(){
-  return;
+  mode = CHOW_MODE;
 }
 
 function addPung(){
-  return;
+  mode = PUNGMODE;
 }
 
 function addOpenQuad(){
-  return;
+  mode = OPEN_QUAD_MODE;
 }
 
 function addClosedQuad(){
-  return;
+  mode = CLOSED_QUAD_MODE;
 }
 
 function addFlowers(){
-  return;
+  mode = FLOWER_MODE;
 }
 
 function sendTile(t){
-  return;
+  switch (mode){
+    case HAND_MODE:
+      closedhand.children[0].src = "graphics/" + ("0" + t).slice(-2) + ".png"
+      break;
+    case CHOW_MODE:
+      break;
+    case PUNG_MODE:
+      break;
+    case OPEN_QUAD_MODE:
+      break;
+    case CLOSED_QUAD_MODE:
+      break;
+    case FLOWER_MODE:
+      break;
+    default:
+      break;
+  }
 }
