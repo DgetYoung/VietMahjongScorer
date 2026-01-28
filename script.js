@@ -143,9 +143,11 @@ function addFlowers(){
 function sendTile(t){
   switch (mode){
     case HAND_MODE:
-      if ((t < 40 || t >= 60) != (closeddata.length == 14 - (opendata.length * 3))){
-        closedimages[closeddata.length].src = "graphics/" + ("0" + t).slice(-2) + ".png";
-        closeddata.push(t);
+      if (closeddata.length < 14 - (opendata.length * 3)){
+        if ((t < 40 || t >= 60) != (closeddata.length == 13 - (opendata.length * 3))){
+          closedimages[closeddata.length].src = "graphics/" + ("0" + t).slice(-2) + ".png";
+          closeddata.push(t);
+        }
       }
       break;
     case CHOW_MODE:
