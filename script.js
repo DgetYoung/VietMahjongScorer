@@ -60,7 +60,7 @@ function addFlowers(){
 function sendTile(t){
   switch (mode){
     case HAND_MODE:
-      console.log(closedimages);
+      console.log(closeddata.length);
       closedimages[closeddata.length].src = "graphics/" + ("0" + t).slice(-2) + ".png";
       closeddata.push(t);
       break;
