@@ -74,11 +74,11 @@
     min-height: 26px;
     padding: 5px;
   }
+  .buttoncontainer{
+    display: flex;
+    justify-content: stretch;
+  }
   .button{
-    /*margin-left: auto;
-    margin-right: auto;
-    margin-top: 5px;
-    margin-bottom: 5px;*/
     margin: 5px;
     text-align: center;
     padding: 5px;
@@ -87,9 +87,6 @@
   }
   .button:hover{
     cursor: pointer;
-  }
-  #scorebutton{
-    width: auto;
   }
   .tilebutton{
     height: 40px;
@@ -196,15 +193,15 @@
     <span></span>
   </div>
 </div>
-<div class="element">
+<div class="buttoncontainer">
   <div id="chowbutton" class="button" onclick="addChow();">Chow</div>
   <div id="pungbutton" class="button" onclick="addPung();">Pung</div>
 </div>
-<div class="element">
+<div class="buttoncontainer">
   <div id="openquadbutton" class="button" onclick="addOpenQuad();">Open Quad</div>
   <div id="closedquadbutton" class="button" onclick="addClosedQuad();">Closed Quad</div>
 </div>
-<div class="element">
+<div class="buttoncontainer">
   <div id="flowerbutton" class="button" onclick="addFlowers();">Flowers</div>
   <div id="backbutton" class="button" onclick="backspace();">&#9003;</div>
 </div>
