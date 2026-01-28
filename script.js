@@ -74,9 +74,26 @@ function changeMode(m)
   }
 }
 
+function backspace(){
+  return;
+}
+
+function abandoncurrent(){
+  switch (mode){
+    case CHOW_MODE:
+    case PUNG_MODE:
+    case OPEN_QUAD_MODE:
+    case CLOSED_QUAD_MODE:
+      //abandon unfinished group
+      break;
+    default:
+      break;
+  }
+}
+
 function addChow(){
+  abandoncurrent();
   if (mode == CHOW_MODE){
-    //TODO: remove unfinished chow
     changeMode(HAND_MODE);
   }
   else{
@@ -85,8 +102,8 @@ function addChow(){
 }
 
 function addPung(){
+  abandoncurrent();
   if (mode == PUNG_MODE){
-    //TODO: remove unfinished pung
     changeMode(HAND_MODE);
   }
   else{
@@ -95,8 +112,8 @@ function addPung(){
 }
 
 function addOpenQuad(){
+  abandoncurrent();
   if (mode == OPEN_QUAD_MODE){
-    //TODO: remove unfinished quad
     changeMode(HAND_MODE);
   }
   else{
@@ -105,8 +122,8 @@ function addOpenQuad(){
 }
 
 function addClosedQuad(){
+  abandoncurrent();
   if (mode == CLOSED_QUAD_MODE){
-    //TODO: remove unfinished quad
     changeMode(HAND_MODE);
   }
   else{
@@ -126,8 +143,10 @@ function addFlowers(){
 function sendTile(t){
   switch (mode){
     case HAND_MODE:
-      closedimages[closeddata.length].src = "graphics/" + ("0" + t).slice(-2) + ".png";
-      closeddata.push(t);
+      if ((t < 40 || t >= 60) != (closeddata.length == 14 - (opendata.length * 3))){
+        closedimages[closeddata.length].src = "graphics/" + ("0" + t).slice(-2) + ".png";
+        closeddata.push(t);
+      }
       break;
     case CHOW_MODE:
       break;
