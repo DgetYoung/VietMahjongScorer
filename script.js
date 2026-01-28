@@ -107,7 +107,47 @@ function isJoker(t){
   }
 }
 
+function updatebuttons(){
+	switch (mode){
+    case HAND_MODE:
+      if (closeddata.length == 13 - (opendata.length * 3)){
+        for (const b of tilebuttons){
+          b.style.opacity = 1;
+        }
+      }
+      else if (closeddata.length == 14 - (opendata.length * 3)){
+        for (const b of tilebuttons){
+          b.style.opacity = 0.5;
+        }
+      }
+      else{
+        for (const b of tilebuttons){
+          if (isFlower(Number(b.id))){
+            b.style.opacity = 0.5;
+          }
+          else{
+            b.style.opacity = 1;
+          }
+        }
+      }
+      break;
+    case CHOW_MODE:
+      break;
+    case PUNG_MODE:
+      break;
+    case OPEN_QUAD_MODE:
+      break;
+    case CLOSED_QUAD_MODE:
+      break;
+    case FLOWER_MODE:
+      break;
+    default:
+      break;
+  }
+}
+
 function initialize(){
+  //initialize hand display
   for (let i = 0; i < 14; i++){
     var tile = document.createElement("img");
     tile.src = "graphics/tilespace.png";
@@ -120,11 +160,9 @@ function initialize(){
     closedhand.appendChild(tile);
     closedimages.push(tile);
   }
-  for (const b of tilebuttons){
-    if (isFlower(Number(b.id))){
-      b.style.opacity = 0.5;
-    }
-  }
+  
+  //update tile buttons
+  updatebuttons();
 }
 
 function changeMode(m)
@@ -139,7 +177,7 @@ function changeMode(m)
   //change mode
   mode = m;
 
-  //darken corresponding button
+  //darken corresponding mode button
   switch(m){
     case CHOW_MODE:
       chowbutton.style.background = "lightgrey";
@@ -159,10 +197,33 @@ function changeMode(m)
     default:
       break;
   }
+  
+  //update tile buttons
+  updatebuttons();
 }
 
 function backspace(){
-  return;
+  switch (mode){
+    case HAND_MODE:
+      if (closeddata.length > 0){
+        closedimages[closeddata.length - 1].src = "graphics/tilespace.png";
+        closeddata.pop();
+      }
+      break;
+    case CHOW_MODE:
+      break;
+    case PUNG_MODE:
+      break;
+    case OPEN_QUAD_MODE:
+      break;
+    case CLOSED_QUAD_MODE:
+      break;
+    case FLOWER_MODE:
+      break;
+    default:
+      break;
+  }
+  updatebuttons();
 }
 
 function abandoncurrent(){
@@ -231,26 +292,9 @@ function sendTile(t){
   switch (mode){
     case HAND_MODE:
       if (document.getElementById(("0" + t).slice(-2)).style.opacity == 1){
-        if (closeddata.length < 14 - (opendata.length * 3)){
-          closedimages[closeddata.length].src = "graphics/" + ("0" + t).slice(-2) + ".png";
-          closeddata.push(t);
-        }
+        closedimages[closeddata.length].src = "graphics/" + ("0" + t).slice(-2) + ".png";
+        closeddata.push(t);
       }
-      if (closeddata.length == 13 - (opendata.length * 3)){
-        for (const b of tilebuttons){
-          if (isFlower(Number(b.id))){
-            b.style.opacity = 1;
-          }
-        }
-      }
-      else{
-        for (const b of tilebuttons){
-          if (isFlower(Number(b.id))){
-            b.style.opacity = 0.5;
-          }
-        }
-      }
-      
       break;
     case CHOW_MODE:
       break;
@@ -265,4 +309,5 @@ function sendTile(t){
     default:
       break;
   }
+  updatebuttons();
 }
