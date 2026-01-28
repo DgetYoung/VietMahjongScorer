@@ -16,6 +16,7 @@ var pungbutton = document.getElementById("pungbutton");
 var openquadbutton = document.getElementById("openquadbutton");
 var closedquadbutton = document.getElementById("closedquadbutton");
 var flowerbutton = document.getElementById("flowerbutton");
+var tilebuttons = document.getElementsByClassName("tilebutton");
 
 var flowerimages = [];
 var openimages = [];
@@ -24,6 +25,87 @@ var closedimages = [];
 var flowerdata = [];
 var opendata = [];
 var closeddata = [];
+
+function isDot(t){
+  if (Math.floor(t / 10) == 0){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+function isBam(t){
+  if (Math.floor(t / 10) == 1){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+function isChar(t){
+  if (Math.floor(t / 10) == 2){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+function isNumber(t){
+  if (Math.floor(t / 10) <= 2){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+function isWind(t){
+  if ((Math.floor(t / 10) == 3) && (t % 10 < 4)){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+function isDragon(t){
+  if ((Math.floor(t / 10) == 3) && (t % 10 >= 4)){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+function isHonor(t){
+  if (Math.floor(t / 10) == 3){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+function isFlower(t){
+  if ((Math.floor(t / 10) == 4) || (Math.floor(t / 10) == 5)){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+function isJoker(t){
+  if (Math.floor(t / 10) >= 6){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
 
 function initialize(){
   for (let i = 0; i < 14; i++){
@@ -37,6 +119,11 @@ function initialize(){
     }
     closedhand.appendChild(tile);
     closedimages.push(tile);
+  }
+  for (const b of tilebuttons){
+    if (isFlower(Number(b.id))){
+      b.style.opacity = 0.5;
+    }
   }
 }
 
@@ -143,12 +230,27 @@ function addFlowers(){
 function sendTile(t){
   switch (mode){
     case HAND_MODE:
-      if (closeddata.length < 14 - (opendata.length * 3)){
-        if ((t < 40 || t >= 60) || (t >= 40 && t < 60 && (closeddata.length == 13 - (opendata.length * 3)))){
+      if (document.getElementById(("0" + t).slice(-2)).style.opacity == 1){
+        if (closeddata.length < 14 - (opendata.length * 3)){
           closedimages[closeddata.length].src = "graphics/" + ("0" + t).slice(-2) + ".png";
           closeddata.push(t);
         }
       }
+      if (closeddata.length == 13 - (opendata.length * 3)){
+        for (const b of tilebuttons){
+          if (isFlower(Number(b.id))){
+            b.style.opacity = 1;
+          }
+        }
+      }
+      else{
+        for (const b of tilebuttons){
+          if (isFlower(Number(b.id))){
+            b.style.opacity = 0.5;
+          }
+        }
+      }
+      
       break;
     case CHOW_MODE:
       break;
