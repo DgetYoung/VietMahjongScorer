@@ -11,6 +11,12 @@ var flowerhand = document.getElementById("flowerhand");
 var openhand = document.getElementById("openhand");
 var closedhand = document.getElementById("closedhand");
 
+var chowbutton = document.getElementById("chowbutton");
+var pungbutton = document.getElementById("pungbutton");
+var openquadbutton = document.getElementById("openquadbutton");
+var closedquadbutton = document.getElementById("closedquadbutton");
+var flowerbutton = document.getElementById("flowerbutton");
+
 var flowerimages = [];
 var openimages = [];
 var closedimages = [];
@@ -34,24 +40,87 @@ function initialize(){
   }
 }
 
+function changeMode(m)
+{
+  //clear all buttons
+  chowbutton.style.background = "white";
+  pungbutton.style.background = "white";
+  openquadbutton.style.background = "white";
+  closedquadbutton.style.background = "white";
+  flowerbutton.style.background = "white";
+  
+  //change mode
+  mode = m;
+
+  //darken corresponding button
+  switch(m){
+    case CHOW_MODE:
+      chowbutton.style.background = "lightgrey";
+      break;
+    case PUNG_MODE:
+      pungbutton.style.background = "lightgrey";
+      break;
+    case OPEN_QUAD_MODE:
+      openquadbutton.style.background = "lightgrey";
+      break;
+    case CLOSED_QUAD_MODE:
+      closedquadbutton.style.background = "lightgrey";
+      break;
+    case FLOWER_MODE:
+      flowerbutton.style.background = "lightgrey";
+      break;
+    default:
+      break;
+  }
+}
+
 function addChow(){
-  mode = CHOW_MODE;
+  if (mode == CHOW_MODE){
+    //TODO: remove unfinished chow
+    changeMode(HAND_MODE);
+  }
+  else{
+    changeMode(CHOW_MODE);
+  }
 }
 
 function addPung(){
-  mode = PUNGMODE;
+  if (mode == PUNG_MODE){
+    //TODO: remove unfinished pung
+    changeMode(HAND_MODE);
+  }
+  else{
+    changeMode(PUNG_MODE);
+  }
 }
 
 function addOpenQuad(){
-  mode = OPEN_QUAD_MODE;
+  if (mode == OPEN_QUAD_MODE){
+    //TODO: remove unfinished quad
+    changeMode(HAND_MODE);
+  }
+  else{
+    changeMode(OPEN_QUAD_MODE);
+  }
 }
 
 function addClosedQuad(){
-  mode = CLOSED_QUAD_MODE;
+  if (mode == CLOSED_QUAD_MODE){
+    //TODO: remove unfinished quad
+    changeMode(HAND_MODE);
+  }
+  else{
+    changeMode(CLOSED_QUAD_MODE);
+  }
 }
 
 function addFlowers(){
-  mode = FLOWER_MODE;
+  if (mode == FLOWER_MODE){
+    changeMode(HAND_MODE);
+  }
+  else{
+    changeMode(FLOWER_MODE);
+  }
 }
 
 function sendTile(t){
