@@ -31,6 +31,10 @@ var closedQuadButton = document.getElementById("closedquadbutton");
 var flowerButton = document.getElementById("flowerbutton");
 var tileButtons = document.getElementsByClassName("tilebutton");
 
+var scoringContent = document.getElementById("scoringcontent");
+var phanField = document.getElementById("phancount");
+var payoutField = document.getElementById("payout");
+
 var flowerImages = [];
 var openImages = [];
 var closedImages = [];
@@ -41,7 +45,7 @@ var closedData = [];
 
 var roundWind = 0;
 var seatWind = 0;
-var selfDraw = false;
+var selfDraw = true;
 
 
 function isJoker(t){
@@ -560,6 +564,9 @@ function backspace(){
         flowerImages.pop();
         flowerData.pop();
       }
+      else{
+        changeMode(HAND_MODE);
+      }
       break;
     default:
       break;
@@ -863,6 +870,30 @@ function findWaits(hand){
   return waits;
 }
 
+function isRobbingAQuad(){
+  return false;
+}
+
+function isReplacementTile(){
+  return false;
+}
+
+function isLastTile(){
+  return false;
+}
+
+function isBlessingOfHeaven(){
+  return false;
+}
+
+function isBlessingOfEarth(){
+  return false;
+}
+
+function isBlessingOfMan(){
+  return false;
+}
+
 function isSingleWait(hand){
   var single = false;
   var h = hand.slice();
@@ -882,6 +913,10 @@ function isAllRuns(hand){
 
 function isFullyClosed(hand){
   return false;
+}
+
+function isSingleRunsClosed(hand){
+  return isSingleWait(hand) && isAllRuns(hand) && isFullyClosed(hand);
 }
 
 function countDragonSets(hand){
@@ -953,7 +988,17 @@ function isFourClosedSets(hand){
 }
 
 function isFourQuads(hand){
-  return false;
+  var fourQuads = false;
+  
+  if (countQuads(hand) == 4){
+    fourQuads = true;
+  }
+  
+  return fourQuads;
+}
+
+function isFourClosedQuads(hand){
+  return isFourClosedSets(hand) && isFourQuads(hand);
 }
 
 function isAllHonors(hand){
@@ -972,8 +1017,18 @@ function isNoFlowersNoLeaves(hand){
   return false;
 }
 
-function countSeatFlowers(hand){
+function isNoJokers(hand){
+  return false;
+}
+
+function countSeatFlowers(){
   var flowers = 0;
+  
+  for (const f of flowerData){
+    if (!isJoker(f) && (f % 10) % 4 == seatWind){
+      flowers++;
+    }
+  }
   
   return flowers;
 }
@@ -1044,209 +1099,379 @@ function countJokerSets(hand){
   return jokerSets;
 }
 
-function scoreArrangement(a){
+function scoreHand(hand, out = []){
   var phan = 0;
+  var big = 0;
+  var bonus = 0;
+  out.length = 0;
   
-  //situationals here
-  
-  if (isSingleWait(a)){
-    phan += 1;
-    //write to scoring results
+  if (isBigFourWinds(hand)){
+    big += 1;
+    if (isNoJokers(hand)){
+      phan += 54;
+      out.push(["Big Four Winds (no jokers)", "9 mủn"]);
+    }
+    else{
+      phan += 48;
+      out.push(["Big Four Winds", "8 mủn"]);
+    }
   }
   
-  if (isAllRuns(a)){
-    phan += 1;
-    //write to scoring results
+  if (isFourClosedQuads(hand)){
+    big += 1;
+    phan += 30;
+    out.push(["Four Closed Quads", "5 mủn"]);
   }
   
-  if (isFullyClosed(a)){
-    phan += 1;
-    //write to scoring results
+  if (isLittleFourWinds(hand)){
+    big += 1;
+    if (isNoJokers(hand)){
+      phan += 30;
+      out.push(["Little Four Winds (no jokers)", "5 mủn"]);
+    }
+    else{
+      phan += 24;
+      out.push(["Little Four Winds", "4 mủn"]);
+    }
   }
   
-  var dragons = countDragonSets(a);
+  if (isAllHonors(hand)){
+    big += 1;
+    if (isNoJokers(hand)){
+      phan += 30;
+      out.push(["All Honors (no jokers)", "5 mủn"]);
+    }
+    else{
+      phan += 24;
+      out.push(["All Honors", "4 mủn"]);
+    }
+  }
+  
+  if (!isFourClosedQuads(hand)){
+    if (isFourQuads(hand)){
+      big += 1;
+      phan += 24;
+      out.push(["Four Quads", "4 mủn"]);
+    }
+    if (isFourClosedSets(hand)){
+      big += 1;
+      if (isNoJokers(hand)){
+        phan += 24;
+        out.push(["Four Closed Sets (no jokers)", "4 mủn"]);
+      }
+      else{
+        phan += 18;
+        out.push(["Four Closed Sets", "3 mủn"]);
+      }
+    }
+  }
+  
+  if (isAllTerminals(hand)){
+    big += 1;
+    if (isNoJokers(hand)){
+      phan += 24;
+      out.push(["All Terminals (no jokers)", "4 mủn"]);
+    }
+    else{
+      phan += 18;
+      out.push(["All Terminals", "3 mủn"]);
+    }
+  }
+  
+  if (isNineGates(hand)){
+    big += 1;
+    if (isNoJokers(hand)){
+      phan += 24;
+      out.push(["Nine Gates (no jokers)", "4 mủn"]);
+    }
+    else{
+      phan += 18;
+      out.push(["Nine Gates", "3 mủn"]);
+    }
+  }
+  
+  if (isThirteenOrphans(hand)){
+    big += 1;
+    bonus -= 1;
+    if (isNoJokers(hand)){
+      phan += 19;
+      out.push(["Thirteen Orphans (no jokers)", "19 phán"]);
+    }
+    else{
+      phan += 13;
+      out.push(["Thirteen Orphans", "13 phán"]);
+    }
+  }
+  
+  if (isBlessingOfHeaven()){
+    big += 1;
+    phan += 12;
+    out.push(["Blessing of Heaven", "2 mủn"]);
+  }
+  
+  if (isBlessingOfEarth()){
+    big += 1;
+    phan += 12;
+    out.push(["Blessing of Earth", "2 mủn"]);
+  }
+  
+  if (isBlessingOfMan()){
+    big += 1;
+    phan += 12;
+    out.push(["Blessing of Man", "2 mủn"]);
+  }
+  
+  if (isBigThreeDragons(hand)){
+    big += 1;
+    bonus += 3;
+    if (isNoJokers(hand)){
+      phan += 15;
+      out.push(["Big Three Dragons (no jokers)", "15 phán"]);
+    }
+    else{
+      phan += 9;
+      out.push(["Big Three Dragons", "9 phán"]);
+    }
+  }
+  
+  if (isNoFlowersNoLeaves(hand)){
+    big += 1;
+    phan += 6;
+    out.push(["No Flowers, No Leaves", "1 mủn"]);
+  }
+  
+  if (isLittleThreeDragons(hand)){
+    big += 1;
+    if (isNoJokers(hand)){
+      phan += 12;
+      out.push(["Little Three Dragons (no jokers)", "2 mủn"]);
+    }
+    else{
+      phan += 6;
+      out.push(["Little Three Dragons", "1 mủn"]);
+    }
+  }
+  
+  if (isAllTerminalsAndHonors(hand)){
+    big += 1;
+    phan += 6;
+    out.push(["All Terminals and Honors", "1 mủn"]);
+  }
+  
+  if (isFullFlush(hand)){
+    big += 1;
+    if (isNoJokers(hand)){
+      phan += 12;
+      out.push(["Full Flush (no jokers)", "2 mủn"]);
+    }
+    else{
+      phan += 6;
+      out.push(["Full Flush", "1 mủn"]);
+    }
+  }
+  
+  if (isHalfFlush(hand)){
+    big += 1;
+    bonus += 3;
+    phan += 3;
+  }
+  
+  if (isAllCalled(hand)){
+    big += 1;
+    if (isNoJokers(hand)){
+      bonus += 2;
+      phan += 4;
+      out.push(["All Called (no jokers)", "4 phán"]);
+    }
+    else{
+      bonus += 3;
+      phan += 3;
+      out.push(["All Called", "3 phán"]);
+    }
+  }
+  
+  if (isAllSets(hand)){
+    big += 1;
+    if (isNoJokers(hand)){
+      bonus += 2;
+      phan += 4;
+      out.push(["All Sets (no jokers)", "4 phán"]);
+    }
+    else{
+      bonus += 3;
+      phan += 3;
+      out.push(["All Sets", "3 phán"]);
+    }
+  }
+  
+  if (isSingleRunsClosed(hand)){
+    big += 1;
+    bonus += 3;
+    phan += 3;
+    out.push(["Single Wait-All Runs-Fully Closed Hand", "3 phán"]);
+  }
+  
+  if (big > 1){
+    phan += bonus;
+    out.push(["+Rounding Bonus", bonus + " phán"]);
+  }
+  
+  if (isRobbingAQuad()){
+    phan += 1;
+    out.push(["Robbing a Quad", "1 phán"]);
+  }
+  
+  if (isReplacementTile()){
+    phan += 1;
+    out.push(["Win on Replacement Tile", "1 phán"]);
+  }
+  
+  if (isLastTile()){
+    phan += 1;
+    out.push(["Win on Last Tile", "1 phán"]);
+  }
+  
+  if (!isSingleRunsClosed(hand)){
+    if (isSingleWait(hand)){
+      phan += 1;
+      out.push(["Single Wait", "1 phán"]);
+    }
+    
+    if (isAllRuns(hand)){
+      phan += 1;
+      out.push(["All Runs", "1 phán"]);
+    }
+    
+    if (isFullyClosed(hand)){
+      phan += 1;
+      out.push(["Fully Closed Hand", "1 phán"]);
+    }
+  }
+  
+  if (isRoundWind(hand)){
+    phan += 1;
+    out.push(["Round Wind Set", "1 phán"]);
+  }
+  
+  if (isSeatWind(hand)){
+    phan += 1;
+    out.push(["Seat Wind Set", "1 phán"]);
+  }
+  
+  var dragons = countDragonSets(hand);
   for (let i = 0; i < dragons; i++){
     phan += 1;
-    //write to scoring results
+    out.push(["Dragon Set", "1 phán"]);
   }
   
-  if (isSeatWind(a)){
-    phan += 1;
-    //write to scoring results
-  }
-  
-  if (isRoundWind(a)){
-    phan += 1;
-    //write to scoring results
-  }
-  
-  var quads = countQuads(a);
+  var quads = countQuads(hand);
   for (let i = 0; i < quads; i++){
     phan += 1;
-    //write to scoring results
+    out.push(["Quad", "1 phán"]);
   }
   
-  if (isSevenPairs(a)){
+  if (isSevenPairs(hand)){
     phan += 1;
-    //write to scoring results
+    out.push(["Seven Pairs", "1 phán"]);
   }
   
-  if (isAllSets(a)){
-    phan += 3;
-    //write to scoring results
-  }
-  
-  if (isAllCalled(a)){
-    phan += 3;
-    //write to scoring results
-  }
-  
-  if (isHalfFlush(a)){
-    phan += 3;
-    //write to scoring results
-  }
-  
-  if (isFullFlush(a)){
-    phan += 6;
-    //write to scoring results
-  }
-  
-  if (isAllTerminalsAndHonors(a)){
-    phan += 6;
-    //write to scoring results
-  }
-  
-  if (isLittleThreeDragons(a)){
-    phan += 6;
-    //write to scoring results
-  }
-  
-  if (isBigThreeDragons(a)){
-    phan += 9;
-    //write to scoring results
-  }
-  
-  if (isThirteenOrphans(a)){
-    phan += 13;
-    //write to scoring results
-  }
-  
-  if (isNineGates(a)){
-    phan += 18;
-    //write to scoring results
-  }
-  
-  if (isAllTerminals(a)){
-    phan += 18;
-    //write to scoring results
-  }
-  
-  if (isFourClosedSets(a)){
-    phan += 18;
-    //write to scoring results
-  }
-  
-  if (isFourQuads(a)){
-    phan += 24;
-    //write to scoring results
-  }
-  
-  if (isAllHonors(a)){
-    phan += 24;
-    //write to scoring results
-  }
-  
-  if (isLittleFourWinds(a)){
-    phan += 24;
-    //write to scoring results
-  }
-  
-  if (isBigFourWinds(a)){
-    phan += 48;
-    //write to scoring results
-  }
-  
-  if (isNoFlowersNoLeaves(a)){
-    phan += 6;
-    //write to scoring results
-  }
-  
-  var flowers = countSeatFlowers(a);
-  for (let i = 0; i < flowers; i++){
-    phan += 1;
-    //write to scoring results
-  }
-  
-  var bouquets = countBouquets(a);
+  var bouquets = countBouquets(hand);
   for (let i = 0; i < bouquets; i++){
     phan += 6;
-    //write to scoring results
+    out.push(["Bouquet", "1 mủn"]);
   }
   
-  var anythings = countAnythingJokers(a);
+  var flowers = countSeatFlowers();
+  for (let i = 0; i < flowers; i++){
+    phan += 1;  
+    out.push(["Seat Flower", "1 phán"]);
+  }
+  
+  var jokerSets = countJokerSets();
+  for (let i = 0; i < jokerSets; i++){
+    phan += 6;
+    out.push(["Joker Set", "1 mủn"]);
+  }
+  
+  var anythings = countAnythingJokers();
   for (let i = 0; i < anythings; i++){
-    phan += 2;
-    //write to scoring results
+    if (seatWind == 0){
+      phan += 2;
+      out.push(["Anything Joker (East)", "3 phán"]);
+    }
+    else{
+      phan += 2;
+      out.push(["Anything Joker", "2 phán"]);
+    }
   }
   
-  var dots = countDotJokers(a);
+  var dots = countDotJokers();
   for (let i = 0; i < dots; i++){
     phan += 1;
-    //write to scoring results
+    out.push(["Dot Joker", "1 phán"]);
   }
   
-  var bams = countBambooJokers(a);
+  var bams = countBambooJokers();
   for (let i = 0; i < bams; i++){
     phan += 1;
-    //write to scoring results
+    out.push(["Bam Joker", "1 phán"]);
   }
   
-  var chars = countCharacterJokers(a);
+  var chars = countCharacterJokers();
   for (let i = 0; i < anythings; i++){
     phan += 1;
-    //write to scoring results
+    out.push(["Char Joker", "1 phán"]);
   }
   
-  var bigFlowers = countFlowerJokers(a);
+  var bigFlowers = countFlowerJokers();
   for (let i = 0; i < bigFlowers; i++){
     phan += 2;
-    //write to scoring results
+    out.push(["Big Flower", "2 phán"]);
   }
   
-  var winds = countWindJokers(a);
+  var winds = countWindJokers();
   for (let i = 0; i < winds; i++){
     phan += 1;
-    //write to scoring results
+    out.push(["Wind Joker", "1 phán"]);
   }
   
-  var honors = countHonorJokers(a);
+  var honors = countHonorJokers();
   for (let i = 0; i < honors; i++){
     phan += 1;
-    //write to scoring results
+    out.push(["Honor Joker", "1 phán"]);
   }
   
-  var dragons = countDragonJokers(a);
+  var dragons = countDragonJokers();
   for (let i = 0; i < dragons; i++){
     phan += 1;
-    //write to scoring results
+    out.push(["Dragon Joker", "1 phán"]);
   }
   
-  var numbers = countNumberJokers(a);
+  var numbers = countNumberJokers();
   for (let i = 0; i < dragons; i++){
     phan += 2;
-    //write to scoring results
+    out.push(["Number Joker", "1 phán"]);
   }
   
-  var jokerSets = countJokerSets(a);
-  for (let i = 0; i < jokerSets; i++){
-    phan += 2;
-    //write to scoring results
+  if (phan == 0){
+    out.push(["Chicken Hand", "0 phán"]);
   }
   
   return phan;
 }
 
-function scoreHand(){
+function printScoring(out){
+  var content = "";
+  
+  for(const i of out){
+    content += "<div class=\"container\"><div>" + i[0] + "</div><div>" + i[1] + "</div></div>";
+    content += "<div class=\"container\"><div>" + i[0] + "</div><div>" + i[1] + "</div></div>";
+  }
+  
+  scoringContent.innerHTML = content;
+}
+
+function score(){
   var hand = closedData.slice();
   var arrangements = [];
   
@@ -1263,17 +1488,30 @@ function scoreHand(){
   
   sort(hand);
   
-  var h = hand.slice();
+  console.clear();
+  
+  //log waits
+  /* var h = hand.slice();
   h.splice(h.indexOf(closedData[closedData.length - 1]), 1);
   
-  console.log(findWaits(h));
+  console.log(findWaits(h)); */
   
   arrange(hand, arrangements);
   
-  for (const i of arrangements){
-    console.log(i);
+  var best = 0;
+  
+  for (let i = 0; i < arrangements.length; i++){
+    console.log(arrangements[i]);
+    console.log(scoreHand(arrangements[i]));
     
-    var score = scoreArrangement(i);
-    console.log(score);
+    if(scoreHand(arrangements[i]) > scoreHand(arrangements[best])){
+      best = i;
+    }
   }
+  
+  var out = [];
+  scoreHand(arrangements[best], out);
+  
+  console.log(out);
+  printScoring(out);
 }
