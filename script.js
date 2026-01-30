@@ -26,8 +26,6 @@ var flowerData = [];
 var openData = [];
 var closedData = [];
 
-var arrangements = [];
-
 
 function isJoker(t){
   if (Math.floor(t / 10) >= 6){
@@ -780,7 +778,7 @@ function compareArrays(a, b){
   return true;
 }
 
-function arrange(hand, builder = [], start = 0){
+function arrange(hand, arrangements, builder = [], start = 0){
   if (isPair(hand)){
     builder.push(...hand.slice());
     sortArrangement(builder);
@@ -792,7 +790,8 @@ function arrange(hand, builder = [], start = 0){
         unique = false;
       }
     }
-    if (unique){arrangements.push(builder)};
+    var b = builder.slice();
+    if (unique){arrangements.push(b);}
     return true;
   }
   else if (hand.length <= 2){return false;}
@@ -802,7 +801,7 @@ function arrange(hand, builder = [], start = 0){
         if (isGroup([hand[i], hand[j], hand[k]])){
           var h = hand.slice();
           var b = builder.slice();
-          arrange(h, b, i + 1);
+          arrange(h, arrangements, b, i + 1);
           builder.push(...[hand[i], hand[j], hand[k]]);
           hand.splice(k, 1);
           hand.splice(j, 1);
@@ -810,7 +809,7 @@ function arrange(hand, builder = [], start = 0){
           
           var h = hand.slice();
           var b = builder.slice();
-          if(!arrange(h, b)){
+          if(!arrange(h, arrangements, b)){
             return false;
           }
         }
@@ -1193,10 +1192,10 @@ function scoreArrangement(a){
 
 function scoreHand(){
   var hand = closedData.slice();
+  var arrangements = [];
   
   sort(hand);
-  arrange(hand);
-  
+  arrange(hand, arrangements);
   
   for (const i of arrangements){
     console.log(i);
