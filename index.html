@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
   @import url('https://fonts.googleapis.com/css?family=Poppins');
+  @import url('https://fonts.googleapis.com/css?family=Montserrat');
   @import url('https://fonts.googleapis.com/css?family=Calistoga');
   
   body{
@@ -27,12 +28,17 @@
     align-items: center;
   }
   .selection{
-    vertical-align: middle;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     list-style-type: none;
     margin: 0;
     padding: 0;
   }
   .selection li{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     float: left;
     margin: 0 5px 0 0;
     padding: 0;
@@ -40,25 +46,31 @@
     position: relative;
   }
   .selection label, .selection input{
-    display: block;
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
   }
-  .selection input[type="radio"]{
+  .selection input[type="radio"], .selection input[type="checkbox"]{
     opacity: 0;
     z-index: 100;
   }
-  .selection input[type="radio"]:checked+label, .Checked+label{
+  .selection input[type="radio"]:checked+label, .selection input[type="checkbox"]:checked+label, .Checked+label{
     background: lightgrey;
   }
   .selection label{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     padding: 5px;
     border: 2px solid black;
     z-index: 90;
+  }
+  #situational, #blessings{
+    font-size: 0.75em;
+    margin: 0 5px 10px 6px;
   }
   #handspace{
     display: flex;
@@ -112,6 +124,18 @@
     padding: 5px;
     border: 2px solid black;
     width: 300px;
+    font-family: "Montserrat", sans-serif;
+  }
+  #scoringcontent{
+    padding-left: 15px;
+    padding-right: 15px;
+    line-height: 1.25;
+  }
+  #phancount, #payout{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1.5;
   }
   .closecontainer{
     display: flex;
@@ -177,13 +201,45 @@
 <div class="container">
   <p class="label">Win by: </p>
   <ul class="selection">
-    <li style="width: 100px">
-      <input type="radio" id="selfdraw" name="winby">
+    <li style="width: 93px">
+      <input type="radio" id="selfdraw" name="winby" checked="checked">
       <label for="selfdraw">Self-Draw</label>
     </li>
-    <li style="width: 100px">
-      <input type="radio" id="dealin" name="winby" checked="checked">
+    <li style="width: 93px">
+      <input type="radio" id="dealin" name="winby">
       <label for="dealin">Deal-In</label>
+    </li>
+  </ul>
+</div>
+<div id="situational" class="container">
+  <ul class="selection">
+    <li style="width: 93px">
+      <input type="checkbox" id="robbing">
+      <label for="robbing">Robbing a Quad</label>
+    </li>
+    <li style="width: 93px">
+      <input type="checkbox" id="replacement">
+      <label for="replacement">Replacement Tile</label>
+    </li>
+    <li style="width: 93px; font-size: 1.33em">
+      <input type="checkbox" id="last">
+      <label for="last">Last Tile</label>
+    </li>
+  </ul>
+</div>
+<div id="blessings" class="container">
+  <ul class="selection">
+    <li style="width: 93px">
+      <input type="checkbox" id="heaven">
+      <label for="heaven">Blessing of Heaven</label>
+    </li>
+    <li style="width: 93px">
+      <input type="checkbox" id="earth">
+      <label for="earth">Blessing of Earth</label>
+    </li>
+    <li style="width: 93px">
+      <input type="checkbox" id="man">
+      <label for="man">Blessing of Man</label>
     </li>
   </ul>
 </div>
@@ -210,7 +266,7 @@
   <div id="flowerbutton" class="button" onclick="addFlowers();">Flowers</div>
   <div id="backbutton" class="button" onclick="backspace();">&#9003;</div>
 </div>
-<a href="#scoring"><div id="scorebutton" class="button" onclick="scoreHand();">Score</div></a>
+<a href="#scoring"><div id="scorebutton" class="button" onclick="score();">Score</div></a>
 <div class="container">
   <img src="graphics/00.png" id="00" class="tilebutton" onclick="sendTile(00);">
   <img src="graphics/01.png" id="01" class="tilebutton" onclick="sendTile(01);">
@@ -287,11 +343,14 @@
 
 <div id="scoring">
   <div class="modalcontent">
-    <p>This is where you will see scoring output.</p>
+    <br>
+    <div id="scoringcontent"><div class="container"><div>Test:</div><div>Test</div></div></div>
+    <br>
+    <div id="phancount">1 phán</div>
+    <div id="payout">2 / 1</div><br>
     <div class="closecontainer"><a href="#"><div id="close">Done</div></a></div>
   </div>
 </div>
-
 <script src="script.js"></script>
 </body>
 </html>
