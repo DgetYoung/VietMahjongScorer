@@ -1465,7 +1465,6 @@ function printScoring(out){
   
   for(const i of out){
     content += "<div class=\"container\"><div>" + i[0] + "</div><div>" + i[1] + "</div></div>";
-    content += "<div class=\"container\"><div>" + i[0] + "</div><div>" + i[1] + "</div></div>";
   }
   
   scoringContent.innerHTML = content;
