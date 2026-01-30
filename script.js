@@ -7,6 +7,19 @@ const FLOWER_MODE = 5;
 
 var mode = HAND_MODE;
 
+var eastRoundButton = document.getElementById("eastround");
+var southRoundButton = document.getElementById("southround");
+var westRoundButton = document.getElementById("westround");
+var northRoundButton = document.getElementById("northround");
+
+var eastSeatButton = document.getElementById("eastseat");
+var southSeatButton = document.getElementById("southseat");
+var westSeatButton = document.getElementById("westseat");
+var northSeatButton = document.getElementById("northseat");
+
+var selfDrawButton = document.getElementById("selfdraw");
+var dealInButton = document.getElementById("dealin");
+
 var flowerHand = document.getElementById("flowerhand");
 var openHand = document.getElementById("openhand");
 var closedHand = document.getElementById("closedhand");
@@ -25,6 +38,10 @@ var closedImages = [];
 var flowerData = [];
 var openData = [];
 var closedData = [];
+
+var roundWind = 0;
+var seatWind = 0;
+var selfDraw = false;
 
 
 function isJoker(t){
@@ -733,7 +750,7 @@ function isRun(r){
     return isTriplet(r);
   }
   else if (isJoker(r[2]) || isFlower(r[2])){
-    if (r[1] - r[0] == 1 && isPair(r.slice(1,3))){return true;}
+    if ((r[1] - r[0] == 1 || r[1] - r[0] == 2) && isPair(r.slice(1,3))){return true;}
   }
   else if (r[1] - r[0] == 1 && r[2] - r[1] == 1){return true;}
   
@@ -1232,6 +1249,17 @@ function scoreArrangement(a){
 function scoreHand(){
   var hand = closedData.slice();
   var arrangements = [];
+  
+  if (eastRoundButton.checked){roundWind = 0;}
+  if (southRoundButton.checked){roundWind = 1;}
+  if (westRoundButton.checked){roundWind = 2;}
+  if (northRoundButton.checked){roundWind = 3;}
+  if (eastSeatButton.checked){seatWind = 0;}
+  if (southSeatButton.checked){seatWind = 1;}
+  if (westSeatButton.checked){seatWind = 2;}
+  if (northSeatButton.checked){seatWind = 3;}
+  if (selfDrawButton.checked){selfDraw = true;}
+  if (dealInButton.checked){selfDraw = false;}
   
   sort(hand);
   
