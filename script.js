@@ -20,6 +20,14 @@ var northSeatButton = document.getElementById("northseat");
 var selfDrawButton = document.getElementById("selfdraw");
 var dealInButton = document.getElementById("dealin");
 
+var robbingButton = document.getElementById("robbing");
+var replacementButton = document.getElementById("replacement");
+var lastButton = document.getElementById("last");
+
+var heavenButton = document.getElementById("heaven");
+var earthButton = document.getElementById("earth");
+var manButton = document.getElementById("man");
+
 var flowerHand = document.getElementById("flowerhand");
 var openHand = document.getElementById("openhand");
 var closedHand = document.getElementById("closedhand");
@@ -29,6 +37,7 @@ var pungButton = document.getElementById("pungbutton");
 var openQuadButton = document.getElementById("openquadbutton");
 var closedQuadButton = document.getElementById("closedquadbutton");
 var flowerButton = document.getElementById("flowerbutton");
+var scoreButton = document.getElementById("scorebutton");
 var tileButtons = document.getElementsByClassName("tilebutton");
 
 var scoringContent = document.getElementById("scoringcontent");
@@ -144,6 +153,18 @@ function isFlower(t){
   else{
     return false;
   }
+}
+
+function copiesInGroup(t, g){
+  var copies = 0;
+  
+  for (const i of g){
+    if (i == t){
+      copies++;
+    }
+  }
+  
+  return copies;
 }
 
 function copiesInHand(t){
@@ -407,6 +428,13 @@ function update(){
     closedQuadButton.style.opacity = 1;
   }
   
+  if (closedData.length + (3 * openData.length) == 14){
+    scoreButton.style.opacity = 1;
+  }
+  else{
+    scoreButton.style.opacity = 0.5;
+  }
+  
   //update tile spacing
   for (const i of closedImages){
     i.style.marginLeft = "0";
@@ -433,6 +461,80 @@ function initialize(){
   }
   
   update();
+}
+
+function handleSelfDraw(){
+  robbingButton.checked = false;
+  earthButton.checked = false;
+}
+
+function handleDealIn(){
+  replacementButton.checked = false;
+  heavenButton.checked = false;
+  manButton.checked = false;
+}
+
+function handleRobbing(){
+  if (robbingButton.checked){
+    dealInButton.checked = true;
+  }
+  replacementButton.checked = false;
+  lastButton.checked = false;
+  heavenButton.checked = false;
+  earthButton.checked = false;
+  manButton.checked = false;
+}
+
+function handleReplacement(){
+  if (replacementButton.checked){
+    selfDrawButton.checked = true;
+  }
+  robbingButton.checked = false;
+  lastButton.checked = false;
+  heavenButton.checked = false;
+  earthButton.checked = false;
+  manButton.checked = false;
+}
+
+function handleLast(){
+  robbingButton.checked = false;
+  replacementButton.checked = false;
+  heavenButton.checked = false;
+  earthButton.checked = false;
+  manButton.checked = false;
+}
+
+function handleHeaven(){
+  if (heavenButton.checked){
+    selfDrawButton.checked = true;
+  }
+  robbingButton.checked = false;
+  replacementButton.checked = false;
+  lastButton.checked = false;
+  earthButton.checked = false;
+  manButton.checked = false;
+}
+
+function handleEarth(){
+  if (earthButton.checked){
+    dealInButton.checked = true;
+  }
+  robbingButton.checked = false;
+  replacementButton.checked = false;
+  lastButton.checked = false;
+  heavenButton.checked = false;
+  manButton.checked = false;
+}
+
+function handleMan(){
+  if (manButton.checked){
+    selfDrawButton.checked = true;
+  }
+  robbingButton.checked = false;
+  replacementButton.checked = false;
+  lastButton.checked = false;
+  heavenButton.checked = false;
+  earthButton.checked = false;
 }
 
 function changeMode(m){
@@ -751,6 +853,7 @@ function isPair(p){
 }
 
 function isRun(r){
+  if (r.length != 3){return false;}
   sort(r);
   if(isHonor(r[0]) || isHonor(r[1]) || isHonor(r[2])){return false;}
   if (isJoker(r[1]) || isFlower(r[1])){
@@ -765,11 +868,19 @@ function isRun(r){
 }
 
 function isTriplet(t){
-  return isPair(t.slice(0,2)) && isPair(t.slice(1,3)) && isPair([t[0], t[2]]);
+  return t.length == 3 && isPair(t.slice(0,2)) && isPair(t.slice(1,3)) && isPair([t[0], t[2]]);
+}
+
+function isQuad(q){
+  return q.length == 4;
+}
+
+function isSet(s){
+  return isTriplet(s) || isQuad(s);
 }
 
 function isGroup(g){
-  return isRun(g) || isTriplet(g);
+  return isRun(g) || isSet(g);
 }
 
 function sortArrangement(a){
@@ -851,6 +962,30 @@ function checkValid(hand){
   return arrangements.length;
 }
 
+function isRobbingAQuad(){
+  return robbingButton.checked;
+}
+
+function isReplacementTile(){
+  return replacementButton.checked;
+}
+
+function isLastTile(){
+  return lastButton.checked;
+}
+
+function isBlessingOfHeaven(){
+  return heavenButton.checked;
+}
+
+function isBlessingOfEarth(){
+  return earthButton.checked;
+}
+
+function isBlessingOfMan(){
+  return manButton.checked;
+}
+
 function findWaits(hand){
   waits = [];
   
@@ -860,6 +995,7 @@ function findWaits(hand){
         var h = hand.slice();
       
         h.push(Number(t.id));
+        sort(h);
         if (checkValid(h)){
           waits.push(Number(t.id));
         }
@@ -868,30 +1004,6 @@ function findWaits(hand){
   }
   
   return waits;
-}
-
-function isRobbingAQuad(){
-  return false;
-}
-
-function isReplacementTile(){
-  return false;
-}
-
-function isLastTile(){
-  return false;
-}
-
-function isBlessingOfHeaven(){
-  return false;
-}
-
-function isBlessingOfEarth(){
-  return false;
-}
-
-function isBlessingOfMan(){
-  return false;
 }
 
 function isSingleWait(hand){
@@ -908,11 +1020,21 @@ function isSingleWait(hand){
 }
 
 function isAllRuns(hand){
-  return false;
+  var allRuns = true;
+  
+  for (const g of openData){
+    if (!isRun(g)){allRuns = false;}
+  }
+  
+  for (let i = 0; i < hand.length - 3; i += 3){
+    if (!isRun(hand.slice(i, i + 3))){allRuns = false;}
+  }
+  
+  return allRuns;
 }
 
 function isFullyClosed(hand){
-  return false;
+  return (openData.length == 0) && selfDraw;
 }
 
 function isSingleRunsClosed(hand){
@@ -922,69 +1044,353 @@ function isSingleRunsClosed(hand){
 function countDragonSets(hand){
   var dragons = 0;
   
+  for (const g of openData){
+    if (isSet(g)){
+      var dragonSet = true;
+      
+      for (const t of g){
+        if (!isDragon(t) && !((isJoker(t) && t % 10 == 0) || (isJoker(t) && t % 10 == 8))){
+          dragonSet = false;
+        }
+      }
+      
+      if (dragonSet == true){dragons++;}
+    }
+  }
+  
+  for (let i = 0; i < hand.length - 3; i += 3){
+    if (isSet(hand.slice(i, i + 3))){
+      var dragonSet = true;
+      
+      for (const t of hand.slice(i, i + 3)){
+        if (!isDragon(t) && !((isJoker(t) && t % 10 == 0) || (isJoker(t) && t % 10 == 8))){
+          dragonSet = false;
+        }
+      }
+      
+      if (dragonSet == true){dragons++;}
+    }
+  }
+  
   return dragons;
 }
 
+function countWindSets(hand){
+  var winds = 0;
+  
+  for (const g of openData){
+    if (isSet(g)){
+      var windSet = true;
+      
+      for (const t of g){
+        if (!isWind(t) && !((isJoker(t) && t % 10 == 0) || (isJoker(t) && t % 10 == 8))){
+          windSet = false;
+        }
+      }
+      
+      if (windSet == true){winds++;}
+    }
+  }
+  
+  for (let i = 0; i < hand.length - 3; i += 3){
+    if (isSet(hand.slice(i, i + 3))){
+      var windSet = true;
+      
+      for (const t of hand.slice(i, i + 3)){
+        if (!isWind(t) && !((isJoker(t) && t % 10 == 0) || (isJoker(t) && t % 10 == 8))){
+          windSet = false;
+        }
+      }
+      
+      if (windSet == true){winds++;}
+    }
+  }
+  
+  return winds;
+}
+
 function isSeatWind(hand){
-  return false;
+  var winds = 0;
+  
+  for (const g of openData){
+    if (isSet(g)){
+      var windSet = true;
+      
+      for (const t of g){
+        if (!(isWind(t) && t % 10 == seatWind) && !((isJoker(t) && t % 10 == 0) || (isJoker(t) && t % 10 == 5) || (isJoker(t) && t % 10 == 8))){
+          windSet = false;
+        }
+      }
+      
+      if (windSet == true){winds++;}
+    }
+  }
+  
+  for (let i = 0; i < hand.length - 3; i += 3){
+    if (isSet(hand.slice(i, i + 3))){
+      var windSet = true;
+      
+      for (const t of hand.slice(i, i + 3)){
+        if (!(isWind(t) && t % 10 == seatWind) && !((isJoker(t) && t % 10 == 0) || (isJoker(t) && t % 10 == 5) || (isJoker(t) && t % 10 == 8))){
+          windSet = false;
+        }
+      }
+      
+      if (windSet == true){winds++;}
+    }
+  }
+  
+  return winds;
 }
 
 function isRoundWind(hand){
-  return false;
+  var winds = 0;
+  
+  for (const g of openData){
+    if (isSet(g)){
+      var windSet = true;
+      
+      for (const t of g){
+        if (!(isWind(t) && t % 10 == roundWind) && !((isJoker(t) && t % 10 == 0) || (isJoker(t) && t % 10 == 5) || (isJoker(t) && t % 10 == 8))){
+          windSet = false;
+        }
+      }
+      
+      if (windSet == true){winds++;}
+    }
+  }
+  
+  for (let i = 0; i < hand.length - 3; i += 3){
+    if (isSet(hand.slice(i, i + 3))){
+      var windSet = true;
+      
+      for (const t of hand.slice(i, i + 3)){
+        if (!(isWind(t) && t % 10 == roundWind) && !((isJoker(t) && t % 10 == 0) || (isJoker(t) && t % 10 == 5) || (isJoker(t) && t % 10 == 8))){
+          windSet = false;
+        }
+      }
+      
+      if (windSet == true){winds++;}
+    }
+  }
+  
+  return winds;
 }
 
-function countQuads(hand){
+function countQuads(){
   var quads = 0;
+  
+  for (const g of openData){
+    if (isQuad(g)){quads++;}
+  }
   
   return quads;
 }
 
+function countClosedQuads(){
+  var quads = 0;
+  
+  for (const i of openImages){
+    for (const j of i){
+      console.log(j.src);
+      if (j.src.substring(j.src.indexOf(".") - 2, j.src.indexOf(".")) == 99){quads++;}
+    }
+  }
+  
+  return quads;
+}
+
+//TODO
 function isSevenPairs(hand){
   return false;
 }
 
 function isAllSets(hand){
-  return false;
+  var allSets = true;
+  
+  for (const g of openData){
+    if (!isSet(g)){allSets = false;}
+  }
+  
+  for (let i = 0; i < hand.length - 3; i += 3){
+    if (!isSet(hand.slice(i, i + 3))){allSets = false;}
+  }
+  
+  return allSets;
 }
 
 function isAllCalled(hand){
-  return false;
+  return openData.length == 4 && !selfDraw;
 }
 
 function isHalfFlush(hand){
-  return false;
+  var halfFlush = true;
+  var dots = 0;
+  var bams = 0;
+  var chars = 0;
+  var suits = 0;
+  var honors = 0;
+  
+  for (const g of openData){
+    for (const t of g){
+      if (isDot(t)){dots++;}
+      if (isBam(t)){bams++;}
+      if (isChar(t)){chars++;}
+      if (isHonor(t)){honors++;}
+    }
+  }
+  
+  for (const t of hand){
+    if (isDot(t)){dots++;}
+    if (isBam(t)){bams++;}
+    if (isChar(t)){chars++;}
+    if (isHonor(t)){honors++;}
+  }
+  
+  if (dots > 0){suits++;}
+  if (bams > 0){suits++;}
+  if (chars > 0){suits++;}
+  
+  if (suits != 1 || honors == 0){halfFlush = false;}
+  
+  return halfFlush;
 }
 
 function isFullFlush(hand){
-  return false;
+  var fullFlush = true;
+  var dots = 0;
+  var bams = 0;
+  var chars = 0;
+  var suits = 0;
+  var honors = 0;
+  
+  for (const g of openData){
+    for (const t of g){
+      if (isDot(t)){dots++;}
+      if (isBam(t)){bams++;}
+      if (isChar(t)){chars++;}
+      if (isHonor(t)){honors++;}
+    }
+  }
+  
+  for (const t of hand){
+    if (isDot(t)){dots++;}
+    if (isBam(t)){bams++;}
+    if (isChar(t)){chars++;}
+    if (isHonor(t)){honors++;}
+  }
+  
+  if (dots > 0){suits++;}
+  if (bams > 0){suits++;}
+  if (chars > 0){suits++;}
+  
+  if (suits != 1 || honors > 0){fullFlush = false;}
+  
+  return fullFlush;
 }
 
 function isAllTerminalsAndHonors(hand){
-  return false;
+  var allTermHon = true;
+  var term = false;
+  var hon = false;
+  
+  for (const g of openData){
+    for (const t of g){
+      if (isTerminal(t)){term = true;}
+      if (isHonor(t)){hon = true;}
+      if (!isTerminal(t) && !isHonor(t) && !isJoker(t)){allTermHon = false;}
+    }
+  }
+  
+  for (const t of hand){
+    if (isTerminal(t)){term = true;}
+    if (isHonor(t)){hon = true;}
+    if (!isTerminal(t) && !isHonor(t) && !isJoker(t) && !isFlower(t)){allTermHon = false;}
+  }
+  
+  if (term == false || hon == false){allTermHon = false;}
+  
+  return allTermHon;
 }
 
 function isLittleThreeDragons(hand){
-  return false;
+  var dragonPair = false;
+  
+  if (isPair(hand.slice(hand.length - 2, hand.length))){
+    dragonPair = true;
+    
+    for (const t of hand.slice(hand.length - 2, hand.length)){
+      if (!isDragon(t) && !((isJoker(t) && t % 10 == 0) || (isJoker(t) && t % 10 == 8))){
+        dragonPair = false;
+      }
+    }
+  }
+  
+  return (countDragonSets(hand) == 2 && dragonPair);
 }
 
 function isBigThreeDragons(hand){
-  return false;
+  return (countDragonSets(hand) == 3);
 }
 
+//TODO
 function isThirteenOrphans(hand){
   return false;
 }
 
 function isNineGates(hand){
-  return false;
+  var nineGates = true;
+  var nums = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+  
+  if (openData.length > 0){nineGates = false;}
+  if (!isFullFlush(hand)){nineGates = false;}
+  
+  for (const t of hand){
+    if (!isJoker(t) && !isFlower(t)){
+      nums[t % 10]++;
+    }
+  }
+  
+  if (nums[0] > 3 && nums[8] > 3){nineGates = false;}
+  
+  var sum = 0;
+  
+  for (let i = 1; i < 8; i++){
+    nums[i]--;
+    if (nums[i] > 0){sum += nums[i];}
+  }
+  
+  if (sum > 1){nineGates = false;}
+  if (nums[0] > 3 && sum > 0){nineGates = false;}
+  if (nums[8] > 3 && sum > 0){nineGates = false;}
+  
+  return nineGates;
 }
 
 function isAllTerminals(hand){
-  return false;
+  var allTerminals = true;
+  
+  for (const g of openData){
+    for (const t of g){
+      if (!isJoker(t) && !isTerminal(t)){allTerminals = false;}
+    }
+  }
+  
+  for (const t of hand){
+    if (!isJoker(t) && !isFlower(t) && !isTerminal(t)){allTerminals = false;}
+  }
+  
+  return allTerminals;
 }
 
 function isFourClosedSets(hand){
-  return false;
+  var fourClosed = true;
+  
+  if (!isAllSets(hand)){fourClosed = false;}
+  
+  if (countQuads() != countClosedQuads()){fourClosed = false;}
+  
+  return fourClosed;
 }
 
 function isFourQuads(hand){
@@ -1002,93 +1408,216 @@ function isFourClosedQuads(hand){
 }
 
 function isAllHonors(hand){
-  return false;
+  var allHonors = true;
+  
+  for (const g of openData){
+    for (const t of g){
+      if (!(isJoker(t) && t % 10 == 0) && !isHonor(t)){allHonors = false;}
+    }
+  }
+  
+  for (const t of hand){
+    if (!(isJoker(t) && t % 10 == 0) && !isFlower(t) && !isHonor(t)){allHonors = false;}
+  }
+  
+  return allHonors;
 }
 
 function isLittleFourWinds(hand){
-  return false;
+  var windPair = false;
+  
+  if (isPair(hand.slice(hand.length - 2, hand.length))){
+    windPair = true;
+    
+    for (const t of hand.slice(hand.length - 2, hand.length)){
+      if (!isWind(t) && !((isJoker(t) && t % 10 == 0) || (isJoker(t) && t % 10 == 8))){
+        windPair = false;
+      }
+    }
+  }
+  
+  return (countWindSets(hand) == 3 && windPair);
 }
 
 function isBigFourWinds(hand){
-  return false;
+  return (countWindSets(hand) == 4);
 }
 
 function isNoFlowersNoLeaves(hand){
-  return false;
+  var nfnl = true;
+  
+  if (flowerData.length > 0){nfnl = false;}
+  
+  for (const g of openData){
+    for (const t of g){
+      if (isJoker(t) || isFlower(t) || isHonor(t)){nfnl = false;}
+    }
+  }
+  
+  for (const t of hand){
+    if (isJoker(t) || isFlower(t) || isHonor(t)){nfnl = false;}
+  }
+  
+  return nfnl;
 }
 
 function isNoJokers(hand){
-  return false;
+  var noJokers = true;
+  
+  for (const f of flowerData){
+    if (isJoker(f)){noJokers = false;}
+  }
+  
+  for (const g of openData){
+    for (const t of g){
+      if (isJoker(t)){noJokers = false;}
+    }
+  }
+  
+  for (const t of hand){
+    if (isJoker(t) || isFlower(t)){noJokers = false;}
+  }
+  
+  return noJokers;
+}
+
+function countBouquets(){
+  var bouquets = 0;
+  
+  for (let i = 40; i < 60; i += 10){
+    if (closedData[closedData.length - 1] < i || closedData[closedData.length - 1] > i + 4){
+      if (copiesInHand(i) && copiesInHand(i + 1) &&
+        copiesInHand(i + 2) && copiesInHand(i + 3)){bouquets++;}
+    }
+    
+    i += 4;
+    if (closedData[closedData.length - 1] < i || closedData[closedData.length - 1] > i + 4){
+      if (copiesInHand(i) && copiesInHand(i + 1) &&
+          copiesInHand(i + 2) && copiesInHand(i + 3)){bouquets++;}
+    }
+  }
+  
+  return bouquets;
 }
 
 function countSeatFlowers(){
   var flowers = 0;
   
   for (const f of flowerData){
-    if (!isJoker(f) && (f % 10) % 4 == seatWind){
+    if (!isJoker(f) && (f % 10) == seatWind){
       flowers++;
     }
   }
   
+  flowers -= countBouquets();
+  
   return flowers;
 }
   
-function countBouquets(hand){
-  var bouquets = 0;
-  
-  return bouquets;
-}
-  
-function countAnythingJokers(hand){
+function countAnythingJokers(){
   var anythings = 0;
+  
+  for (const f of flowerData){
+    if (isJoker(f) && (f % 10) == 0){
+      anythings++;
+    }
+  }
   
   return anythings;
 }
   
-function countDotJokers(hand){
+function countDotJokers(){
   var dots = 0;
+  
+  for (const f of flowerData){
+    if (isJoker(f) && (f % 10) == 1){
+      dots++;
+    }
+  }
   
   return dots;
 }
   
-function countBambooJokers(hand){
+function countBambooJokers(){
   var bams = 0;
+  
+  for (const f of flowerData){
+    if (isJoker(f) && (f % 10) == 2){
+      bams++;
+    }
+  }
   
   return bams;
 }
   
-function countCharacterJokers(hand){
+function countCharacterJokers(){
   var chars = 0;
+  
+  for (const f of flowerData){
+    if (isJoker(f) && (f % 10) == 3){
+      chars++;
+    }
+  }
   
   return chars;
 }
   
-function countFlowerJokers(hand){
+function countFlowerJokers(){
   var bigFlowers = 0;
+  
+  for (const f of flowerData){
+    if (isJoker(f) && (f % 10) == 4){
+      bigFlowers++;
+    }
+  }
   
   return bigFlowers;
 }
   
-function countWindJokers(hand){
+function countWindJokers(){
   var winds = 0;
+  
+  for (const f of flowerData){
+    if (isJoker(f) && (f % 10) == 5){
+      winds++;
+    }
+  }
   
   return winds;
 }
   
-function countHonorJokers(hand){
+function countHonorJokers(){
   var honors = 0;
+  
+  for (const f of flowerData){
+    if (isJoker(f) && (f % 10) == 8){
+      honors++;
+    }
+  }
   
   return honors;
 }
   
-function countDragonJokers(hand){
+function countDragonJokers(){
   var dragons = 0;
+  
+  for (const f of flowerData){
+    if (isJoker(f) && (f % 10) == 6){
+      dragons++;
+    }
+  }
   
   return dragons;
 }
   
-function countNumberJokers(hand){
+function countNumberJokers(){
   var numbers = 0;
+  
+  for (const f of flowerData){
+    if (isJoker(f) && (f % 10) == 7){
+      numbers++;
+    }
+  }
   
   return numbers;
 }
@@ -1096,17 +1625,29 @@ function countNumberJokers(hand){
 function countJokerSets(hand){
   var jokerSets = 0;
   
+  for (let i = 60; i < 99; i += 10){
+    if (copiesInHand(i) && copiesInHand(i + 1) &&
+        copiesInHand(i + 2) && copiesInHand(i + 3)){jokerSets++;}
+    i += 4;
+    if (copiesInHand(i) && copiesInHand(i + 1) &&
+        copiesInHand(i + 2) && copiesInHand(i + 3)){jokerSets++;}
+    if (copiesInHand(i) && copiesInHand(i + 4) &&
+        copiesInHand(i + 2) && copiesInHand(i + 3)){jokerSets++;}
+    if (copiesInHand(i) && copiesInHand(i + 1) &&
+        copiesInHand(i + 4) && copiesInHand(i + 3)){jokerSets++;}
+  }
+  
   return jokerSets;
 }
 
 function scoreHand(hand, out = []){
   var phan = 0;
   var big = 0;
-  var bonus = 0;
+  var med = 0;
   out.length = 0;
   
   if (isBigFourWinds(hand)){
-    big += 1;
+    big++;
     if (isNoJokers(hand)){
       phan += 54;
       out.push(["Big Four Winds (no jokers)", "9 mủn"]);
@@ -1118,13 +1659,13 @@ function scoreHand(hand, out = []){
   }
   
   if (isFourClosedQuads(hand)){
-    big += 1;
+    big++;
     phan += 30;
     out.push(["Four Closed Quads", "5 mủn"]);
   }
   
   if (isLittleFourWinds(hand)){
-    big += 1;
+    big++;
     if (isNoJokers(hand)){
       phan += 30;
       out.push(["Little Four Winds (no jokers)", "5 mủn"]);
@@ -1136,7 +1677,7 @@ function scoreHand(hand, out = []){
   }
   
   if (isAllHonors(hand)){
-    big += 1;
+    big++;
     if (isNoJokers(hand)){
       phan += 30;
       out.push(["All Honors (no jokers)", "5 mủn"]);
@@ -1149,12 +1690,12 @@ function scoreHand(hand, out = []){
   
   if (!isFourClosedQuads(hand)){
     if (isFourQuads(hand)){
-      big += 1;
+      big++;
       phan += 24;
       out.push(["Four Quads", "4 mủn"]);
     }
     if (isFourClosedSets(hand)){
-      big += 1;
+      big++;
       if (isNoJokers(hand)){
         phan += 24;
         out.push(["Four Closed Sets (no jokers)", "4 mủn"]);
@@ -1167,7 +1708,7 @@ function scoreHand(hand, out = []){
   }
   
   if (isAllTerminals(hand)){
-    big += 1;
+    big++;
     if (isNoJokers(hand)){
       phan += 24;
       out.push(["All Terminals (no jokers)", "4 mủn"]);
@@ -1179,7 +1720,7 @@ function scoreHand(hand, out = []){
   }
   
   if (isNineGates(hand)){
-    big += 1;
+    big++;
     if (isNoJokers(hand)){
       phan += 24;
       out.push(["Nine Gates (no jokers)", "4 mủn"]);
@@ -1191,7 +1732,7 @@ function scoreHand(hand, out = []){
   }
   
   if (isThirteenOrphans(hand)){
-    big += 1;
+    big++;
     bonus -= 1;
     if (isNoJokers(hand)){
       phan += 19;
@@ -1204,26 +1745,25 @@ function scoreHand(hand, out = []){
   }
   
   if (isBlessingOfHeaven()){
-    big += 1;
+    big++;
     phan += 12;
     out.push(["Blessing of Heaven", "2 mủn"]);
   }
   
   if (isBlessingOfEarth()){
-    big += 1;
+    big++;
     phan += 12;
     out.push(["Blessing of Earth", "2 mủn"]);
   }
   
   if (isBlessingOfMan()){
-    big += 1;
+    big++;
     phan += 12;
     out.push(["Blessing of Man", "2 mủn"]);
   }
   
   if (isBigThreeDragons(hand)){
-    big += 1;
-    bonus += 3;
+    big++;
     if (isNoJokers(hand)){
       phan += 15;
       out.push(["Big Three Dragons (no jokers)", "15 phán"]);
@@ -1235,13 +1775,12 @@ function scoreHand(hand, out = []){
   }
   
   if (isNoFlowersNoLeaves(hand)){
-    big += 1;
+    big++;
     phan += 6;
     out.push(["No Flowers, No Leaves", "1 mủn"]);
   }
   
   if (isLittleThreeDragons(hand)){
-    big += 1;
     if (isNoJokers(hand)){
       phan += 12;
       out.push(["Little Three Dragons (no jokers)", "2 mủn"]);
@@ -1253,82 +1792,70 @@ function scoreHand(hand, out = []){
   }
   
   if (isAllTerminalsAndHonors(hand)){
-    big += 1;
+    big++;
     phan += 6;
     out.push(["All Terminals and Honors", "1 mủn"]);
   }
   
-  if (isFullFlush(hand)){
-    big += 1;
-    if (isNoJokers(hand)){
-      phan += 12;
-      out.push(["Full Flush (no jokers)", "2 mủn"]);
-    }
-    else{
-      phan += 6;
-      out.push(["Full Flush", "1 mủn"]);
+  if(!isNineGates(hand)){
+    if (isFullFlush(hand)){
+      big++;
+      if (isNoJokers(hand)){
+        phan += 12;
+        out.push(["Full Flush (no jokers)", "2 mủn"]);
+      }
+      else{
+        phan += 6;
+        out.push(["Full Flush", "1 mủn"]);
+      }
     }
   }
   
   if (isHalfFlush(hand)){
-    big += 1;
-    bonus += 3;
+    med++;
     phan += 3;
+    out.push(["Half Flush", "3 phán"]);
   }
   
   if (isAllCalled(hand)){
-    big += 1;
+    med++;
     if (isNoJokers(hand)){
-      bonus += 2;
       phan += 4;
       out.push(["All Called (no jokers)", "4 phán"]);
     }
     else{
-      bonus += 3;
       phan += 3;
       out.push(["All Called", "3 phán"]);
     }
   }
   
-  if (isAllSets(hand)){
-    big += 1;
-    if (isNoJokers(hand)){
-      bonus += 2;
-      phan += 4;
-      out.push(["All Sets (no jokers)", "4 phán"]);
-    }
-    else{
-      bonus += 3;
-      phan += 3;
-      out.push(["All Sets", "3 phán"]);
+  if (!isFourClosedSets(hand) && !isFourQuads(hand)){
+    if (isAllSets(hand)){
+      med++;
+      if (isNoJokers(hand)){
+        phan += 4;
+        out.push(["All Sets (no jokers)", "4 phán"]);
+      }
+      else{
+        phan += 3;
+        out.push(["All Sets", "3 phán"]);
+      }
     }
   }
   
   if (isSingleRunsClosed(hand)){
-    big += 1;
-    bonus += 3;
+    med++;
     phan += 3;
-    out.push(["Single Wait-All Runs-Fully Closed Hand", "3 phán"]);
+    out.push(["Single Wait-All Runs-<br>&nbsp;&nbsp;&nbsp;&nbsp;Fully Closed Hand", "3 phán"]);
   }
   
-  if (big > 1){
-    phan += bonus;
+  if (big > 0 && med > 0){
+    var bonus = 3 * med;
     out.push(["+Rounding Bonus", bonus + " phán"]);
   }
-  
-  if (isRobbingAQuad()){
-    phan += 1;
-    out.push(["Robbing a Quad", "1 phán"]);
-  }
-  
-  if (isReplacementTile()){
-    phan += 1;
-    out.push(["Win on Replacement Tile", "1 phán"]);
-  }
-  
-  if (isLastTile()){
-    phan += 1;
-    out.push(["Win on Last Tile", "1 phán"]);
+  else if (med > 2){
+    var bonus = 3 * (med - 2);
+    out.push(["+Rounding Bonus", bonus + " phán"]);
   }
   
   if (!isSingleRunsClosed(hand)){
@@ -1348,126 +1875,323 @@ function scoreHand(hand, out = []){
     }
   }
   
-  if (isRoundWind(hand)){
-    phan += 1;
-    out.push(["Round Wind Set", "1 phán"]);
-  }
-  
-  if (isSeatWind(hand)){
-    phan += 1;
-    out.push(["Seat Wind Set", "1 phán"]);
-  }
-  
-  var dragons = countDragonSets(hand);
-  for (let i = 0; i < dragons; i++){
-    phan += 1;
-    out.push(["Dragon Set", "1 phán"]);
-  }
-  
-  var quads = countQuads(hand);
-  for (let i = 0; i < quads; i++){
-    phan += 1;
-    out.push(["Quad", "1 phán"]);
-  }
-  
   if (isSevenPairs(hand)){
     phan += 1;
     out.push(["Seven Pairs", "1 phán"]);
   }
   
+  if (!isBigFourWinds(hand) && !isLittleFourWinds(hand)){
+    if (isRoundWind(hand)){
+      phan += 1;
+      out.push(["Round Wind Set", "1 phán"]);
+    }
+    
+    if (isSeatWind(hand)){
+      phan += 1;
+      out.push(["Seat Wind Set", "1 phán"]);
+    }
+  }
+  
+  var dragons = countDragonSets(hand);
+  if (!isBigThreeDragons(hand) && !isLittleThreeDragons(hand)){
+    phan += dragons;
+    if (dragons > 1){
+      out.push(["Dragon Set x" + dragons, dragons + " phán"]);
+    }
+    else if (dragons == 1){
+      out.push(["Dragon Set", "1 phán"]);
+    }
+  }
+  
+  if (!isFourQuads(hand)){
+    var quads = countQuads(hand);
+    phan += quads;
+    if (quads > 1){
+      out.push(["Quad x" + quads, quads + " phán"]);
+    }
+    else if (quads == 1){
+      out.push(["Quad", "1 phán"]);
+    }
+  }
+  
+  if (isRobbingAQuad()){
+    phan += 1;
+    out.push(["Robbing a Quad", "1 phán"]);
+  }
+  
+  if (isReplacementTile()){
+    phan += 1;
+    out.push(["Win on Replacement Tile", "1 phán"]);
+  }
+  
+  if (isLastTile()){
+    phan += 1;
+    out.push(["Win on Last Tile", "1 phán"]);
+  }
+  
   var bouquets = countBouquets(hand);
-  for (let i = 0; i < bouquets; i++){
-    phan += 6;
+  phan += 6 * bouquets;
+  if (bouquets > 1){
+    out.push(["Bouquet x" + bouquets, bouquets + " mủn"]);
+  }
+  else if (bouquets == 1){
     out.push(["Bouquet", "1 mủn"]);
   }
   
   var flowers = countSeatFlowers();
-  for (let i = 0; i < flowers; i++){
-    phan += 1;  
+  phan += flowers;
+  if (flowers > 1){
+    out.push(["Seat Flower x" + flowers, flowers + " phán"]);
+  }
+  else if (flowers == 1){
     out.push(["Seat Flower", "1 phán"]);
   }
   
   var jokerSets = countJokerSets();
-  for (let i = 0; i < jokerSets; i++){
-    phan += 6;
-    out.push(["Joker Set", "1 mủn"]);
+  phan += jokerSets;
+  if (jokerSets > 1){
+    out.push(["Joker Set x" + jokerSets, jokerSets + " phán"]);
+  }
+  else if (jokerSets == 1){
+    out.push(["Joker Set", "1 phán"]);
   }
   
   var anythings = countAnythingJokers();
-  for (let i = 0; i < anythings; i++){
-    if (seatWind == 0){
-      phan += 2;
+  if (seatWind == 0){
+    phan += 3 * anythings;
+    if (anythings > 1){
+      out.push(["Anything Joker (East) x" + anythings, (3 * anythings) + " phán"]);
+    }
+    else if (anythings == 1){
       out.push(["Anything Joker (East)", "3 phán"]);
     }
-    else{
-      phan += 2;
+  }
+  else{
+    phan += 2 * anythings;
+    if (anythings > 1){
+      out.push(["Anything Joker x" + anythings, (2 * anythings) + " phán"]);
+    }
+    else if (anythings == 1){
       out.push(["Anything Joker", "2 phán"]);
     }
   }
   
   var dots = countDotJokers();
-  for (let i = 0; i < dots; i++){
-    phan += 1;
-    out.push(["Dot Joker", "1 phán"]);
+  if (seatWind == 1){
+    phan += 2 * dots;
+    if (dots > 1){
+      out.push(["Dot Joker (South) x" + dots, (2 * dots) + " phán"]);
+    }
+    else if (dots == 1){
+      out.push(["Dot Joker (South)", "2 phán"]);
+    }
+  }
+  else{
+    phan += dots;
+    if (dots > 1){
+      out.push(["Dot Joker x" + dots, dots + " phán"]);
+    }
+    else if (dots == 1){
+      out.push(["Dot Joker", "1 phán"]);
+    }
   }
   
   var bams = countBambooJokers();
-  for (let i = 0; i < bams; i++){
-    phan += 1;
-    out.push(["Bam Joker", "1 phán"]);
+  if (seatWind == 2){
+    phan += 2 * bams;
+    if (bams > 1){
+      out.push(["Bamboo Joker (South) x" + bams, (2 * bams) + " phán"]);
+    }
+    else if (bams == 1){
+      out.push(["Bamboo Joker (South)", "2 phán"]);
+    }
+  }
+  else{
+    phan += bams;
+    if (bams > 1){
+      out.push(["Bamboo Joker x" + bams, bams + " phán"]);
+    }
+    else if (bams == 1){
+      out.push(["Bamboo Joker", "1 phán"]);
+    }
   }
   
   var chars = countCharacterJokers();
-  for (let i = 0; i < anythings; i++){
-    phan += 1;
-    out.push(["Char Joker", "1 phán"]);
+  if (seatWind == 3){
+    phan += 2 * chars;
+    if (chars > 1){
+      out.push(["Character Joker (North) x" + chars, (2 * chars) + " phán"]);
+    }
+    else if (chars == 1){
+      out.push(["Character Joker (North)", "2 phán"]);
+    }
+  }
+  else{
+    phan += chars;
+    if (chars > 1){
+      out.push(["Character Joker x" + chars, chars + " phán"]);
+    }
+    else if (chars == 1){
+      out.push(["Character Joker", "1 phán"]);
+    }
   }
   
   var bigFlowers = countFlowerJokers();
-  for (let i = 0; i < bigFlowers; i++){
-    phan += 2;
+  phan += 2 * bigFlowers;
+  if (bigFlowers > 1){
+    out.push(["Big Flower x" + bigFlowers, (2 * bigFlowers) + " phán"]);
+  }
+  else if (bigFlowers == 1){
     out.push(["Big Flower", "2 phán"]);
   }
   
   var winds = countWindJokers();
-  for (let i = 0; i < winds; i++){
-    phan += 1;
-    out.push(["Wind Joker", "1 phán"]);
+  if (seatWind == 1){
+    phan += 2 * winds;
+    if (winds > 1){
+      out.push(["Wind Joker (South) x" + winds, (2 * winds) + " phán"]);
+    }
+    else if (winds == 1){
+      out.push(["Wind Joker (South)", "2 phán"]);
+    }
+  }
+  else{
+    phan += winds;
+    if (winds > 1){
+      out.push(["Wind Joker x" + winds, winds + " phán"]);
+    }
+    else if (winds == 1){
+      out.push(["Wind Joker", "1 phán"]);
+    }
   }
   
   var honors = countHonorJokers();
-  for (let i = 0; i < honors; i++){
-    phan += 1;
-    out.push(["Honor Joker", "1 phán"]);
+  if (seatWind == 1){
+    phan += 2 * honors;
+    if (honors > 1){
+      out.push(["Honor Joker (South) x" + honors, (2 * honors) + " phán"]);
+    }
+    else if (honors == 1){
+      out.push(["Honor Joker (South)", "2 phán"]);
+    }
+  }
+  else if (seatWind == 2){
+    phan += 2 * honors;
+    if (honors > 1){
+      out.push(["Honor Joker (West) x" + honors, (2 * honors) + " phán"]);
+    }
+    else if (honors == 1){
+      out.push(["Honor Joker (West)", "2 phán"]);
+    }
+  }
+  else{
+    phan += honors;
+    if (honors > 1){
+      out.push(["Honor Joker x" + honors, honors + " phán"]);
+    }
+    else if (honors == 1){
+      out.push(["Honor Joker", "1 phán"]);
+    }
   }
   
   var dragons = countDragonJokers();
-  for (let i = 0; i < dragons; i++){
-    phan += 1;
-    out.push(["Dragon Joker", "1 phán"]);
+  if (seatWind == 2){
+    phan += 2 * dragons;
+    if (dragons > 1){
+      out.push(["Dragon Joker (West) x" + dragons, (2 * dragons) + " phán"]);
+    }
+    else if (dragons == 1){
+      out.push(["Dragon Joker (West)", "2 phán"]);
+    }
+  }
+  else{
+    phan += dragons;
+    if (dragons > 1){
+      out.push(["Dragon Joker x" + dragons, dragons + " phán"]);
+    }
+    else if (dragons == 1){
+      out.push(["Dragon Joker", "1 phán"]);
+    }
   }
   
   var numbers = countNumberJokers();
-  for (let i = 0; i < dragons; i++){
-    phan += 2;
-    out.push(["Number Joker", "1 phán"]);
+  if (seatWind == 3){
+    phan += 3 * numbers;
+    if (numbers > 1){
+      out.push(["Number Joker (North) x" + numbers, (3 * numbers) + " phán"]);
+    }
+    else if (numbers == 1){
+      out.push(["Number Joker (North)", "3 phán"]);
+    }
+  }
+  else{
+    phan += 2 * numbers;
+    if (numbers > 1){
+      out.push(["Number Joker x" + numbers, (2 * numbers) + " phán"]);
+    }
+    else if (numbers == 1){
+      out.push(["Number Joker", "2 phán"]);
+    }
   }
   
   if (phan == 0){
     out.push(["Chicken Hand", "0 phán"]);
   }
   
+  if (!selfDraw && (isFlower(closedData[closedData.length - 1]) || isJoker(closedData[closedData.length - 1]))){
+    phan += 6;
+    out.push(["+Win on Discarded Flower/Joker", "1 mủn"]);
+  }
+  
   return phan;
 }
 
-function printScoring(out){
+function printScoring(out, phan){
   var content = "";
+  var phantext = "";
+  var payDouble = 1;
+  var paySingle = 0.5;
   
   for(const i of out){
-    content += "<div class=\"container\"><div>" + i[0] + "</div><div>" + i[1] + "</div></div>";
+    var font = "";
+    if (i[0].length > 25 || i[0].charAt(0) == '+'){font = " style=\"font-size: 0.75em\"";}
+    content += "<div class=\"container\"><div" + font + ">" + i[0] + "</div><div>" + i[1] + "</div></div>";
   }
   
+  if (phan >= 6){
+    payDouble = Math.floor(phan / 6) * 64;
+    paySingle = Math.floor(phan / 6) * 32;
+    phantext += Math.floor(phan / 6) + " mủn";
+    if (phan % 6 > 0){
+      payDouble += 6 * (phan % 6);
+      paySingle += 6 * (phan % 6);
+      phantext += " " + phan % 6 + " phán";
+    }
+  }
+  else{
+    for (let i = 0; i < phan; i++){
+      payDouble *= 2;
+      paySingle *= 2;
+    }
+    phantext += phan + " phán";
+  }
+  
+  if (paySingle < 1){paySingle = 1};
+  
   scoringContent.innerHTML = content;
+  phanField.innerHTML = phantext;
+  if (selfDraw || phan == 0){
+    payoutField.innerHTML = payDouble + " all (" + (3 * payDouble) + ")";
+  }
+  else{
+    payoutField.innerHTML = payDouble + " / " + paySingle + " (" + (payDouble + 2 * paySingle) + ")";
+  }
+}
+
+function printError(){
+  scoringContent.innerHTML = "Invalid hand";
+  phanField.innerHTML = "";
+  payoutField.innerHTML = "";
 }
 
 function score(){
@@ -1486,21 +2210,18 @@ function score(){
   if (dealInButton.checked){selfDraw = false;}
   
   sort(hand);
-  
   console.clear();
-  
-  //log waits
-  /* var h = hand.slice();
-  h.splice(h.indexOf(closedData[closedData.length - 1]), 1);
-  
-  console.log(findWaits(h)); */
-  
   arrange(hand, arrangements);
   
   var best = 0;
   
   for (let i = 0; i < arrangements.length; i++){
     console.log(arrangements[i]);
+    
+    var a = arrangements[i].slice()
+    a.splice(a.indexOf(closedData[closedData.length - 1]), 1);
+    
+    console.log(findWaits(a))
     console.log(scoreHand(arrangements[i]));
     
     if(scoreHand(arrangements[i]) > scoreHand(arrangements[best])){
@@ -1508,9 +2229,12 @@ function score(){
     }
   }
   
-  var out = [];
-  scoreHand(arrangements[best], out);
-  
-  console.log(out);
-  printScoring(out);
+  if (arrangements.length > 0){
+    var out = [];
+    var phan = scoreHand(arrangements[best], out);
+    printScoring(out, phan);
+  }
+  else{
+    printError();
+  }
 }
