@@ -1975,7 +1975,7 @@ function scoreHand(hand, out = []){
   }
   else if (med > 2){
     var bonus = 3 * (med - 2);
-    out.push(["+Rounding Bonus", bonus + " phán"]);
+    if (bonus > 0){out.push(["+Rounding Bonus", bonus + " phán"]);}
   }
 
   if (isBlessingOfHeaven()){
