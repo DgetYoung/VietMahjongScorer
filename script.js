@@ -37,9 +37,10 @@ var pungButton = document.getElementById("pungbutton");
 var openQuadButton = document.getElementById("openquadbutton");
 var closedQuadButton = document.getElementById("closedquadbutton");
 var flowerButton = document.getElementById("flowerbutton");
-var scoreButton = document.getElementById("scorebutton");
 var tileButtons = document.getElementsByClassName("tilebutton");
 
+var scoreButton = document.getElementById("scorebutton");
+var scoreLink = document.getElementById("scorelink");
 var scoringContent = document.getElementById("scoringcontent");
 var phanField = document.getElementById("phancount");
 var payoutField = document.getElementById("payout");
@@ -430,9 +431,11 @@ function update(){
   
   if (closedData.length + (3 * openData.length) == 14){
     scoreButton.style.opacity = 1;
+    scoreLink.href = "#scoring";
   }
   else{
     scoreButton.style.opacity = 0.5;
+    scoreLink.href = "#";
   }
   
   //update tile spacing
@@ -1495,6 +1498,7 @@ function countBouquets(){
       if (copiesInHand(i) && copiesInHand(i + 1) &&
           copiesInHand(i + 2) && copiesInHand(i + 3)){bouquets++;}
     }
+    i -= 4;
   }
   
   return bouquets;
@@ -1948,9 +1952,9 @@ function scoreHand(hand, out = []){
   }
   
   var jokerSets = countJokerSets();
-  phan += jokerSets;
+  phan += 6 * jokerSets;
   if (jokerSets > 1){
-    out.push(["Joker Set x" + jokerSets, jokerSets + " phán"]);
+    out.push(["Joker Set x" + jokerSets, jokerSets + " mủn"]);
   }
   else if (jokerSets == 1){
     out.push(["Joker Set", "1 phán"]);
@@ -2195,46 +2199,48 @@ function printError(){
 }
 
 function score(){
-  var hand = closedData.slice();
-  var arrangements = [];
-  
-  if (eastRoundButton.checked){roundWind = 0;}
-  if (southRoundButton.checked){roundWind = 1;}
-  if (westRoundButton.checked){roundWind = 2;}
-  if (northRoundButton.checked){roundWind = 3;}
-  if (eastSeatButton.checked){seatWind = 0;}
-  if (southSeatButton.checked){seatWind = 1;}
-  if (westSeatButton.checked){seatWind = 2;}
-  if (northSeatButton.checked){seatWind = 3;}
-  if (selfDrawButton.checked){selfDraw = true;}
-  if (dealInButton.checked){selfDraw = false;}
-  
-  sort(hand);
-  console.clear();
-  arrange(hand, arrangements);
-  
-  var best = 0;
-  
-  for (let i = 0; i < arrangements.length; i++){
-    console.log(arrangements[i]);
+  if (scoreButton.style.opacity == 1){
+    var hand = closedData.slice();
+    var arrangements = [];
     
-    var a = arrangements[i].slice()
-    a.splice(a.indexOf(closedData[closedData.length - 1]), 1);
+    if (eastRoundButton.checked){roundWind = 0;}
+    if (southRoundButton.checked){roundWind = 1;}
+    if (westRoundButton.checked){roundWind = 2;}
+    if (northRoundButton.checked){roundWind = 3;}
+    if (eastSeatButton.checked){seatWind = 0;}
+    if (southSeatButton.checked){seatWind = 1;}
+    if (westSeatButton.checked){seatWind = 2;}
+    if (northSeatButton.checked){seatWind = 3;}
+    if (selfDrawButton.checked){selfDraw = true;}
+    if (dealInButton.checked){selfDraw = false;}
     
-    console.log(findWaits(a))
-    console.log(scoreHand(arrangements[i]));
+    sort(hand);
+    console.clear();
+    arrange(hand, arrangements);
     
-    if(scoreHand(arrangements[i]) > scoreHand(arrangements[best])){
-      best = i;
+    var best = 0;
+    
+    for (let i = 0; i < arrangements.length; i++){
+      console.log(arrangements[i]);
+      
+      var a = arrangements[i].slice()
+      a.splice(a.indexOf(closedData[closedData.length - 1]), 1);
+      
+      console.log(findWaits(a))
+      console.log(scoreHand(arrangements[i]));
+      
+      if(scoreHand(arrangements[i]) > scoreHand(arrangements[best])){
+        best = i;
+      }
     }
-  }
-  
-  if (arrangements.length > 0){
-    var out = [];
-    var phan = scoreHand(arrangements[best], out);
-    printScoring(out, phan);
-  }
-  else{
-    printError();
+    
+    if (arrangements.length > 0){
+      var out = [];
+      var phan = scoreHand(arrangements[best], out);
+      printScoring(out, phan);
+    }
+    else{
+      printError();
+    }
   }
 }
