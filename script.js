@@ -987,7 +987,6 @@ function arrangeSevenPairs(hand, arrangements, builder = [], start = 0){
   for (let i = start; i < hand.length; i++){
     for (let j = i + 1; j < hand.length; j++){
       if (isPair([hand[i], hand[j]])){
-        console.log([hand[i], hand[j]]);
         var h = hand.slice();
         var b = builder.slice();
         builder.push(...[hand[i], hand[j]]);
@@ -1391,14 +1390,26 @@ function isBigThreeDragons(hand){
   return (countDragonSets(hand) == 3);
 }
 
-//TODO
 function isThirteenOrphans(hand){
-  var orphans = false;
-  /* var dots = 0;
+  var orphans = true;
+  var dots = 0;
+  var onedot = 0;
+  var ninedot = 0;
   var bams = 0;
+  var onebam = 0;
+  var ninebam = 0;
   var chars = 0;
-  var suits = 0;
+  var onechar = 0;
+  var ninechar = 0;
   var winds = 0;
+  var east = 0;
+  var south = 0;
+  var west = 0;
+  var north = 0;
+  var dragons = 0;
+  var red = 0;
+  var green = 0;
+  var white = 0;
   
   for (const t of hand){
     if (isDot(t)){dots++;}
@@ -1406,35 +1417,43 @@ function isThirteenOrphans(hand){
     if (isChar(t)){chars++;}
     if (isWind(t)){winds++;}
     if (isDragon(t)){dragons++;}
+    if (isDot(t) && (t % 10 == 0)){onedot++;}
+    if (isDot(t) && (t % 10 == 8)){ninedot++;}
+    if (isBam(t) && (t % 10 == 0)){onebam++;}
+    if (isBam(t) && (t % 10 == 8)){ninebam++;}
+    if (isChar(t) && (t % 10 == 0)){onechar++;}
+    if (isChar(t) && (t % 10 == 8)){ninechar++;}
+    if (isWind(t) && (t % 10 == 0)){east++;}
+    if (isWind(t) && (t % 10 == 1)){south++;}
+    if (isWind(t) && (t % 10 == 2)){west++;}
+    if (isWind(t) && (t % 10 == 3)){north++;}
+    if (isDragon(t) && (t % 10 == 4)){red++;}
+    if (isDragon(t) && (t % 10 == 5)){green++;}
+    if (isDragon(t) && (t % 10 == 6)){white++;}
   }
   
-  if (dots > 0){suits++;}
-  if (bams > 0){suits++;}
-  if (chars > 0){suits++;}
+  dots = Math.max(0, dots - 2);
+  bams = Math.max(0, bams - 2);
+  chars = Math.max(0, chars - 2);
+  winds = Math.max(0, winds - 4);
+  dragons = Math.max(0, dragons - 3);
   
-  if (suits != 1 || honors > 0){fullFlush = false;}
+  onedot--;
+  ninedot--;
+  onebam--;
+  ninebam--;
+  onechar--;
+  ninechar--;
+  east--;
+  south--;
+  west--;
+  north--;
   
   if (openData.length > 0){orphans = false;}
   if (!isAllTerminalsAndHonors(hand)){orphans = false;}
-  
-  for (const t of hand){
-    if (!isJoker(t) && !isFlower(t)){
-      nums[t % 10]++;
-    }
-  }
-  
-  if (nums[0] > 3 && nums[8] > 3){nineGates = false;}
-  
-  var sum = 0;
-  
-  for (let i = 1; i < 8; i++){
-    nums[i]--;
-    if (nums[i] > 0){sum += nums[i];}
-  }
-  
-  if (sum > 1){nineGates = false;}
-  if (nums[0] > 3 && sum > 0){nineGates = false;}
-  if (nums[8] > 3 && sum > 0){nineGates = false;} */
+  if (dots + bams + chars + winds + dragons > 1){orphans = false;}
+  if (onedot + ninedot + onebam + ninebam + onechar + ninechar +
+      east + south + west + north > 1){orphans = false;}
   
   return orphans;
 }
@@ -1906,10 +1925,12 @@ function scoreHand(hand, out = []){
     }
   }
   
-  if (isAllTerminalsAndHonors(hand)){
-    big++;
-    phan += 6;
-    out.push(["All Terminals and Honors", "1 mủn"]);
+  if (!isThirteenOrphans(hand)){
+    if (isAllTerminalsAndHonors(hand)){
+      big++;
+      phan += 6;
+      out.push(["All Terminals and Honors", "1 mủn"]);
+    }
   }
   
   if(!isNineGates(hand)){
@@ -2336,6 +2357,7 @@ function score(){
     
     sort(hand);
     console.clear();
+    if (isThirteenOrphans(hand)){arrangements.push(hand);}
     arrange(hand, arrangements);
     
     var h = closedData.slice();
