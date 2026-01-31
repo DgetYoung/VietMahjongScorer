@@ -1390,7 +1390,7 @@ function isFourClosedSets(hand){
   
   if (!isAllSets(hand)){fourClosed = false;}
   
-  if (countQuads() != countClosedQuads()){fourClosed = false;}
+  if (countClosedQuads() != openData.length){fourClosed = false;}
   
   return fourClosed;
 }
