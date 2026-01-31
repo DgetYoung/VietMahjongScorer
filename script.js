@@ -1970,7 +1970,7 @@ function scoreHand(hand, out = []){
   }
   
   if (big > 0 && med > 0){
-    var bonus = (3 - adjustment) * med;
+    var bonus = 3 * (med - adjustment);
     out.push(["+Rounding Bonus", bonus + " phán"]);
   }
   else if (med > 2){
