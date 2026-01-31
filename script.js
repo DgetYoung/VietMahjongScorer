@@ -1889,7 +1889,7 @@ function scoreHand(hand, out = []){
     }
   }
 
-  if (special && isSingleWait(hand) isFullyClosed(hand)){
+  if (special && isSingleWait(hand) && isFullyClosed(hand)){
   out.push(["+Single Wait-Fully Closed Hand", "1 mủn"]);
     phan += 6;
   }
