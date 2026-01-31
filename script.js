@@ -1888,11 +1888,15 @@ function scoreHand(hand, out = []){
       out.push(["Thirteen Orphans", "13 phán"]);
     }
   }
-  
+
+  if (special && isSingleWait(hand) isFullyClosed(hand)){
+  out.push(["+Single Wait-Fully Closed Hand", "1 mủn"]);
+    phan += 6;
+  }
+
   if (isBigThreeDragons(hand)){
     big++;
     adjustment++;
-    special = true;
     if (isNoJokers(hand)){
       phan += 15;
       out.push(["Big Three Dragons (no jokers)", "15 phán"]);
@@ -1901,11 +1905,6 @@ function scoreHand(hand, out = []){
       phan += 9;
       out.push(["Big Three Dragons", "9 phán"]);
     }
-  }
-
-  if (special && isSingleWait(hand) isFullyClosed(hand)){
-  out.push(["+Single Wait-Fully Closed Hand", "1 mủn"]);
-    phan += 6;
   }
   
   if (isNoFlowersNoLeaves(hand)){
