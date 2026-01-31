@@ -1195,7 +1195,6 @@ function countClosedQuads(){
   
   for (const i of openImages){
     for (const j of i){
-      console.log(j.src);
       if (j.src.substring(j.src.indexOf(".") - 2, j.src.indexOf(".")) == 99){quads++;}
     }
   }
