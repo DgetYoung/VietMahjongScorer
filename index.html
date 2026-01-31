@@ -54,7 +54,7 @@
   }
   .selection input[type="radio"], .selection input[type="checkbox"]{
     opacity: 0;
-    z-index: 100;
+    z-index: 10;
   }
   .selection input[type="radio"]:checked+label, .selection input[type="checkbox"]:checked+label, .Checked+label{
     background: lightgrey;
@@ -66,7 +66,7 @@
     text-align: center;
     padding: 5px;
     border: 2px solid black;
-    z-index: 90;
+    z-index: 9;
   }
   #situational, #blessings{
     font-size: 0.75em;
@@ -113,6 +113,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 90;
   }
   #scoring:not(:target){
     visibility: hidden;
@@ -125,6 +126,7 @@
     border: 2px solid black;
     width: 300px;
     font-family: "Montserrat", sans-serif;
+    z-index: 100;
   }
   #scoringcontent{
     padding-left: 15px;
@@ -202,11 +204,11 @@
   <p class="label">Win by: </p>
   <ul class="selection">
     <li style="width: 93px">
-      <input type="radio" id="selfdraw" name="winby" checked="checked">
+      <input type="radio" id="selfdraw" name="winby" onclick="handleSelfDraw()" checked="checked">
       <label for="selfdraw">Self-Draw</label>
     </li>
     <li style="width: 93px">
-      <input type="radio" id="dealin" name="winby">
+      <input type="radio" id="dealin" onclick="handleDealIn()" name="winby">
       <label for="dealin">Deal-In</label>
     </li>
   </ul>
@@ -214,15 +216,15 @@
 <div id="situational" class="container">
   <ul class="selection">
     <li style="width: 93px">
-      <input type="checkbox" id="robbing">
+      <input type="checkbox" id="robbing" onclick="handleRobbing()">
       <label for="robbing">Robbing a Quad</label>
     </li>
     <li style="width: 93px">
-      <input type="checkbox" id="replacement">
+      <input type="checkbox" id="replacement" onclick="handleReplacement()">
       <label for="replacement">Replacement Tile</label>
     </li>
     <li style="width: 93px; font-size: 1.33em">
-      <input type="checkbox" id="last">
+      <input type="checkbox" id="last" onclick="handleLast()">
       <label for="last">Last Tile</label>
     </li>
   </ul>
@@ -230,15 +232,15 @@
 <div id="blessings" class="container">
   <ul class="selection">
     <li style="width: 93px">
-      <input type="checkbox" id="heaven">
+      <input type="checkbox" id="heaven" onclick="handleHeaven()">
       <label for="heaven">Blessing of Heaven</label>
     </li>
     <li style="width: 93px">
-      <input type="checkbox" id="earth">
+      <input type="checkbox" id="earth" onclick="handleEarth()">
       <label for="earth">Blessing of Earth</label>
     </li>
     <li style="width: 93px">
-      <input type="checkbox" id="man">
+      <input type="checkbox" id="man" onclick="handleMan()">
       <label for="man">Blessing of Man</label>
     </li>
   </ul>
