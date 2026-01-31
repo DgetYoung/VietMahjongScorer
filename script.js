@@ -1956,7 +1956,7 @@ function scoreHand(hand, out = []){
     out.push(["Joker Set x" + jokerSets, jokerSets + " mủn"]);
   }
   else if (jokerSets == 1){
-    out.push(["Joker Set", "1 phán"]);
+    out.push(["Joker Set", "1 mủn"]);
   }
   
   var anythings = countAnythingJokers();
