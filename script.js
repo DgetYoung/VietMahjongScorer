@@ -1902,6 +1902,11 @@ function scoreHand(hand, out = []){
       out.push(["Big Three Dragons", "9 phán"]);
     }
   }
+
+  if (special && isSingleWait(hand) isFullyClosed(hand)){
+  out.push(["+Single Wait-Fully Closed Hand", "1 mủn"]);
+    phan += 6;
+  }
   
   if (isNoFlowersNoLeaves(hand)){
     big++;
@@ -1983,10 +1988,12 @@ function scoreHand(hand, out = []){
   if (big > 0 && med > 0){
     var bonus = 3 * (med - adjustment);
     out.push(["+Rounding Bonus", bonus + " phán"]);
+    phan += bonus;
   }
   else if (med > 2){
     var bonus = 3 * (med - 2);
     if (bonus > 0){out.push(["+Rounding Bonus", bonus + " phán"]);}
+    phan += bonus;
   }
 
   if (isBlessingOfHeaven()){
