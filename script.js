@@ -1621,7 +1621,7 @@ function countSeatFlowers(){
   var flowers = 0;
   
   for (const f of flowerData){
-    if (!isJoker(f) && (f % 10) == seatWind){
+    if (!isJoker(f) && (f % 10) % 4 == seatWind){
       flowers++;
     }
   }
