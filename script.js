@@ -1779,10 +1779,12 @@ function scoreHand(hand, out = []){
   var big = 0;
   var med = 0;
   var adjustment = 0;
+  var special = false;
   out.length = 0;
   
   if (isBigFourWinds(hand)){
     big++;
+    special = true;
     if (isNoJokers(hand)){
       phan += 54;
       out.push(["Big Four Winds (no jokers)", "9 mủn"]);
@@ -1795,12 +1797,14 @@ function scoreHand(hand, out = []){
   
   if (isFourClosedQuads(hand)){
     big++;
+    special = true;
     phan += 30;
     out.push(["Four Closed Quads", "5 mủn"]);
   }
   
   if (isLittleFourWinds(hand)){
     big++;
+    special = true;
     if (isNoJokers(hand)){
       phan += 30;
       out.push(["Little Four Winds (no jokers)", "5 mủn"]);
@@ -1813,6 +1817,7 @@ function scoreHand(hand, out = []){
   
   if (isAllHonors(hand)){
     big++;
+    special = true;
     if (isNoJokers(hand)){
       phan += 30;
       out.push(["All Honors (no jokers)", "5 mủn"]);
@@ -1825,12 +1830,14 @@ function scoreHand(hand, out = []){
   
   if (!isFourClosedQuads(hand)){
     if (isFourQuads(hand)){
+      special = true;
       big++;
       phan += 24;
       out.push(["Four Quads", "4 mủn"]);
     }
     if (isFourClosedSets(hand)){
       big++;
+      special = true;
       if (isNoJokers(hand)){
         phan += 24;
         out.push(["Four Closed Sets (no jokers)", "4 mủn"]);
@@ -1844,6 +1851,7 @@ function scoreHand(hand, out = []){
   
   if (isAllTerminals(hand)){
     big++;
+    special = true;
     if (isNoJokers(hand)){
       phan += 24;
       out.push(["All Terminals (no jokers)", "4 mủn"]);
@@ -1856,6 +1864,7 @@ function scoreHand(hand, out = []){
   
   if (isNineGates(hand)){
     big++;
+    special = true;
     if (isNoJokers(hand)){
       phan += 24;
       out.push(["Nine Gates (no jokers)", "4 mủn"]);
@@ -1869,9 +1878,10 @@ function scoreHand(hand, out = []){
   if (isThirteenOrphans(hand)){
     big++;
     bonus -= 1;
+    special = true
     if (isNoJokers(hand)){
-      phan += 19;
-      out.push(["Thirteen Orphans (no jokers)", "19 phán"]);
+      phan += 18;
+      out.push(["Thirteen Orphans (no jokers)", "18 phán"]);
     }
     else{
       phan += 13;
@@ -1882,6 +1892,7 @@ function scoreHand(hand, out = []){
   if (isBigThreeDragons(hand)){
     big++;
     adjustment++;
+    special = true;
     if (isNoJokers(hand)){
       phan += 15;
       out.push(["Big Three Dragons (no jokers)", "15 phán"]);
@@ -1993,6 +2004,7 @@ function scoreHand(hand, out = []){
     out.push(["Blessing of Man", "2 mủn"]);
   }
   
+  if (!special){
   if (!isSingleRunsClosed(hand)){
     if (isSingleWait(hand)){
       phan += 1;
@@ -2047,6 +2059,7 @@ function scoreHand(hand, out = []){
     else if (quads == 1){
       out.push(["Quad", "1 phán"]);
     }
+  }
   }
   
   if (isRobbingAQuad()){
