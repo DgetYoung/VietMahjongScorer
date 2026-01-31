@@ -168,6 +168,18 @@ function copiesInGroup(t, g){
   return copies;
 }
 
+function copiesReplaced(t){
+  var copies = 0;
+  
+  for (const i of flowerData){
+    if (i == t){
+      copies++;
+    }
+  }
+  
+  return copies;
+}
+
 function copiesInHand(t){
   var copies = 0;
   
@@ -956,6 +968,42 @@ function arrange(hand, arrangements, builder = [], start = 0){
   }
 }
 
+function arrangeSevenPairs(hand, arrangements, builder = [], start = 0){
+  if (isPair(hand)){
+    builder.push(...hand.slice());
+    
+    var unique = true;
+    
+    for (const i of arrangements){
+      if (compareArrays(i, builder)){
+        unique = false;
+      }
+    }
+    var b = builder.slice();
+    if (unique){arrangements.push(b);}
+    return true;
+  }
+  else if (hand.length <= 2){return false;}
+  for (let i = start; i < hand.length; i++){
+    for (let j = i + 1; j < hand.length; j++){
+      if (isPair([hand[i], hand[j]])){
+        console.log([hand[i], hand[j]]);
+        var h = hand.slice();
+        var b = builder.slice();
+        builder.push(...[hand[i], hand[j]]);
+        hand.splice(j, 1);
+        hand.splice(i, 1);
+        
+        var h = hand.slice();
+        var b = builder.slice();
+        if(!arrangeSevenPairs(h, arrangements, b)){
+          return false;
+        }
+      }
+    }
+  }
+}
+
 function checkValid(hand){
   var h = hand.slice();
   var arrangements = [];
@@ -1075,6 +1123,8 @@ function countDragonSets(hand){
     }
   }
   
+  if (isSevenPairs(hand)) dragons = 0;
+  
   return dragons;
 }
 
@@ -1108,6 +1158,8 @@ function countWindSets(hand){
       if (windSet == true){winds++;}
     }
   }
+  
+  if (isSevenPairs(hand)) winds = 0;
   
   return winds;
 }
@@ -1202,9 +1254,13 @@ function countClosedQuads(){
   return quads;
 }
 
-//TODO
 function isSevenPairs(hand){
-  return false;
+  var h = hand.slice();
+  var arrangements = [];
+  
+  arrangeSevenPairs(h, arrangements);
+  
+  return arrangements.length;
 }
 
 function isAllSets(hand){
@@ -1337,7 +1393,50 @@ function isBigThreeDragons(hand){
 
 //TODO
 function isThirteenOrphans(hand){
-  return false;
+  var orphans = false;
+  /* var dots = 0;
+  var bams = 0;
+  var chars = 0;
+  var suits = 0;
+  var winds = 0;
+  
+  for (const t of hand){
+    if (isDot(t)){dots++;}
+    if (isBam(t)){bams++;}
+    if (isChar(t)){chars++;}
+    if (isWind(t)){winds++;}
+    if (isDragon(t)){dragons++;}
+  }
+  
+  if (dots > 0){suits++;}
+  if (bams > 0){suits++;}
+  if (chars > 0){suits++;}
+  
+  if (suits != 1 || honors > 0){fullFlush = false;}
+  
+  if (openData.length > 0){orphans = false;}
+  if (!isAllTerminalsAndHonors(hand)){orphans = false;}
+  
+  for (const t of hand){
+    if (!isJoker(t) && !isFlower(t)){
+      nums[t % 10]++;
+    }
+  }
+  
+  if (nums[0] > 3 && nums[8] > 3){nineGates = false;}
+  
+  var sum = 0;
+  
+  for (let i = 1; i < 8; i++){
+    nums[i]--;
+    if (nums[i] > 0){sum += nums[i];}
+  }
+  
+  if (sum > 1){nineGates = false;}
+  if (nums[0] > 3 && sum > 0){nineGates = false;}
+  if (nums[8] > 3 && sum > 0){nineGates = false;} */
+  
+  return orphans;
 }
 
 function isNineGates(hand){
@@ -1487,16 +1586,12 @@ function countBouquets(){
   var bouquets = 0;
   
   for (let i = 40; i < 60; i += 10){
-    if (closedData[closedData.length - 1] < i || closedData[closedData.length - 1] > i + 4){
-      if (copiesInHand(i) && copiesInHand(i + 1) &&
-        copiesInHand(i + 2) && copiesInHand(i + 3)){bouquets++;}
-    }
+    if (copiesReplaced(i) && copiesReplaced(i + 1) &&
+        copiesInHand(i + 2) && copiesReplaced(i + 3)){bouquets++;}
     
     i += 4;
-    if (closedData[closedData.length - 1] < i || closedData[closedData.length - 1] > i + 4){
-      if (copiesInHand(i) && copiesInHand(i + 1) &&
-          copiesInHand(i + 2) && copiesInHand(i + 3)){bouquets++;}
-    }
+    if (copiesReplaced(i) && copiesReplaced(i + 1) &&
+          copiesReplaced(i + 2) && copiesReplaced(i + 3)){bouquets++;}
     i -= 4;
   }
   
@@ -1625,6 +1720,22 @@ function countNumberJokers(){
   return numbers;
 }
   
+function countReplacedJokerSets(){
+  var jokerSets = 0;
+  
+  for (let i = 60; i < 99; i += 10){
+    if (copiesReplaced(i) && copiesReplaced(i + 1) &&
+        copiesInHand(i + 2) && copiesReplaced(i + 3)){jokerSets++;}
+    
+    i += 4;
+    if (copiesReplaced(i) && copiesReplaced(i + 1) &&
+          copiesReplaced(i + 2) && copiesReplaced(i + 3)){jokerSets++;}
+    i -= 4;
+  }
+  
+  return jokerSets;
+}
+  
 function countJokerSets(hand){
   var jokerSets = 0;
   
@@ -1638,6 +1749,7 @@ function countJokerSets(hand){
         copiesInHand(i + 2) && copiesInHand(i + 3)){jokerSets++;}
     if (copiesInHand(i) && copiesInHand(i + 1) &&
         copiesInHand(i + 4) && copiesInHand(i + 3)){jokerSets++;}
+    i -= 4;
   }
   
   return jokerSets;
@@ -1950,7 +2062,16 @@ function scoreHand(hand, out = []){
     out.push(["Seat Flower", "1 phán"]);
   }
   
-  var jokerSets = countJokerSets();
+  var replacedJokerSets = countReplacedJokerSets();
+  phan += 12 * replacedJokerSets;
+  if (replacedJokerSets > 1){
+    out.push(["Joker Set (all replaced) x" + replacedJokerSets, (2 * replacedJokerSets) + " mủn"]);
+  }
+  else if (replacedJokerSets == 1){
+    out.push(["Joker Set (all replaced)", "2 mủn"]);
+  }
+  
+  var jokerSets = countJokerSets() - replacedJokerSets;
   phan += 6 * jokerSets;
   if (jokerSets > 1){
     out.push(["Joker Set x" + jokerSets, jokerSets + " mủn"]);
@@ -2216,6 +2337,9 @@ function score(){
     sort(hand);
     console.clear();
     arrange(hand, arrangements);
+    
+    var h = closedData.slice();
+    arrangeSevenPairs(h, arrangements);
     
     var best = 0;
     
