@@ -1778,6 +1778,7 @@ function scoreHand(hand, out = []){
   var phan = 0;
   var big = 0;
   var med = 0;
+  var adjustment = 0;
   out.length = 0;
   
   if (isBigFourWinds(hand)){
@@ -1878,26 +1879,9 @@ function scoreHand(hand, out = []){
     }
   }
   
-  if (isBlessingOfHeaven()){
-    big++;
-    phan += 12;
-    out.push(["Blessing of Heaven", "2 mủn"]);
-  }
-  
-  if (isBlessingOfEarth()){
-    big++;
-    phan += 12;
-    out.push(["Blessing of Earth", "2 mủn"]);
-  }
-  
-  if (isBlessingOfMan()){
-    big++;
-    phan += 12;
-    out.push(["Blessing of Man", "2 mủn"]);
-  }
-  
   if (isBigThreeDragons(hand)){
     big++;
+    adjustment++;
     if (isNoJokers(hand)){
       phan += 15;
       out.push(["Big Three Dragons (no jokers)", "15 phán"]);
@@ -1986,12 +1970,27 @@ function scoreHand(hand, out = []){
   }
   
   if (big > 0 && med > 0){
-    var bonus = 3 * med;
+    var bonus = (3 - adjustment) * med;
     out.push(["+Rounding Bonus", bonus + " phán"]);
   }
   else if (med > 2){
     var bonus = 3 * (med - 2);
     out.push(["+Rounding Bonus", bonus + " phán"]);
+  }
+
+  if (isBlessingOfHeaven()){
+    phan += 12;
+    out.push(["Blessing of Heaven", "2 mủn"]);
+  }
+  
+  if (isBlessingOfEarth()){
+    phan += 12;
+    out.push(["Blessing of Earth", "2 mủn"]);
+  }
+  
+  if (isBlessingOfMan()){
+    phan += 12;
+    out.push(["Blessing of Man", "2 mủn"]);
   }
   
   if (!isSingleRunsClosed(hand)){
