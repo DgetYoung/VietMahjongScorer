@@ -1778,13 +1778,10 @@ function scoreHand(hand, out = []){
   var phan = 0;
   var big = 0;
   var med = 0;
-  var adjustment = 0;
-  var special = false;
   out.length = 0;
   
   if (isBigFourWinds(hand)){
     big++;
-    special = true;
     if (isNoJokers(hand)){
       phan += 54;
       out.push(["Big Four Winds (no jokers)", "9 mủn"]);
@@ -1797,14 +1794,12 @@ function scoreHand(hand, out = []){
   
   if (isFourClosedQuads(hand)){
     big++;
-    special = true;
     phan += 30;
     out.push(["Four Closed Quads", "5 mủn"]);
   }
   
   if (isLittleFourWinds(hand)){
     big++;
-    special = true;
     if (isNoJokers(hand)){
       phan += 30;
       out.push(["Little Four Winds (no jokers)", "5 mủn"]);
@@ -1817,7 +1812,6 @@ function scoreHand(hand, out = []){
   
   if (isAllHonors(hand)){
     big++;
-    special = true;
     if (isNoJokers(hand)){
       phan += 30;
       out.push(["All Honors (no jokers)", "5 mủn"]);
@@ -1830,14 +1824,12 @@ function scoreHand(hand, out = []){
   
   if (!isFourClosedQuads(hand)){
     if (isFourQuads(hand)){
-      special = true;
       big++;
       phan += 24;
       out.push(["Four Quads", "4 mủn"]);
     }
     if (isFourClosedSets(hand)){
       big++;
-      special = true;
       if (isNoJokers(hand)){
         phan += 24;
         out.push(["Four Closed Sets (no jokers)", "4 mủn"]);
@@ -1851,7 +1843,6 @@ function scoreHand(hand, out = []){
   
   if (isAllTerminals(hand)){
     big++;
-    special = true;
     if (isNoJokers(hand)){
       phan += 24;
       out.push(["All Terminals (no jokers)", "4 mủn"]);
@@ -1864,7 +1855,6 @@ function scoreHand(hand, out = []){
   
   if (isNineGates(hand)){
     big++;
-    special = true;
     if (isNoJokers(hand)){
       phan += 24;
       out.push(["Nine Gates (no jokers)", "4 mủn"]);
@@ -1878,25 +1868,36 @@ function scoreHand(hand, out = []){
   if (isThirteenOrphans(hand)){
     big++;
     bonus -= 1;
-    special = true
     if (isNoJokers(hand)){
-      phan += 18;
-      out.push(["Thirteen Orphans (no jokers)", "18 phán"]);
+      phan += 19;
+      out.push(["Thirteen Orphans (no jokers)", "19 phán"]);
     }
     else{
       phan += 13;
       out.push(["Thirteen Orphans", "13 phán"]);
     }
   }
-
-  if (special && isSingleWait(hand) && isFullyClosed(hand)){
-  out.push(["+Single Wait-Fully Closed Hand", "1 mủn"]);
-    phan += 6;
+  
+  if (isBlessingOfHeaven()){
+    big++;
+    phan += 12;
+    out.push(["Blessing of Heaven", "2 mủn"]);
   }
-
+  
+  if (isBlessingOfEarth()){
+    big++;
+    phan += 12;
+    out.push(["Blessing of Earth", "2 mủn"]);
+  }
+  
+  if (isBlessingOfMan()){
+    big++;
+    phan += 12;
+    out.push(["Blessing of Man", "2 mủn"]);
+  }
+  
   if (isBigThreeDragons(hand)){
     big++;
-    adjustment++;
     if (isNoJokers(hand)){
       phan += 15;
       out.push(["Big Three Dragons (no jokers)", "15 phán"]);
@@ -1985,32 +1986,14 @@ function scoreHand(hand, out = []){
   }
   
   if (big > 0 && med > 0){
-    var bonus = 3 * (med - adjustment);
+    var bonus = 3 * med;
     out.push(["+Rounding Bonus", bonus + " phán"]);
-    phan += bonus;
   }
   else if (med > 2){
     var bonus = 3 * (med - 2);
-    if (bonus > 0){out.push(["+Rounding Bonus", bonus + " phán"]);}
-    phan += bonus;
-  }
-
-  if (isBlessingOfHeaven()){
-    phan += 12;
-    out.push(["Blessing of Heaven", "2 mủn"]);
+    out.push(["+Rounding Bonus", bonus + " phán"]);
   }
   
-  if (isBlessingOfEarth()){
-    phan += 12;
-    out.push(["Blessing of Earth", "2 mủn"]);
-  }
-  
-  if (isBlessingOfMan()){
-    phan += 12;
-    out.push(["Blessing of Man", "2 mủn"]);
-  }
-  
-  if (!special){
   if (!isSingleRunsClosed(hand)){
     if (isSingleWait(hand)){
       phan += 1;
@@ -2065,7 +2048,6 @@ function scoreHand(hand, out = []){
     else if (quads == 1){
       out.push(["Quad", "1 phán"]);
     }
-  }
   }
   
   if (isRobbingAQuad()){
