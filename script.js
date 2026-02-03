@@ -55,7 +55,7 @@ var closedData = [];
 
 var roundWind = 0;
 var seatWind = 0;
-var selfDraw = true;
+var selfDraw = false;
 
 
 function isJoker(t){
@@ -2269,6 +2269,11 @@ function scoreHand(hand, out = []){
     }
   }
   
+  if (selfDraw == false && (isFlower(closedData[closedData.length - 1]) || isJoker(closedData[closedData.length - 1]))){
+    phan += 6;
+    out.push(["+Win on Discarded Flower/Joker", "1 mủn"]);
+  }
+  
   if (phan == 0){
     if (isNoJokers(hand)){
 		phan += 6;
@@ -2278,11 +2283,6 @@ function scoreHand(hand, out = []){
 	{
 		out.push(["Mosquito Hand", "0 phán"]);
 	}
-  }
-  
-  if (!selfDraw && (isFlower(closedData[closedData.length - 1]) || isJoker(closedData[closedData.length - 1]))){
-    phan += 6;
-    out.push(["+Win on Discarded Flower/Joker", "1 mủn"]);
   }
   
   return phan;
