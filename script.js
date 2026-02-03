@@ -2270,7 +2270,14 @@ function scoreHand(hand, out = []){
   }
   
   if (phan == 0){
-    out.push(["Chicken Hand", "0 phán"]);
+    if (isNoJokers(hand)){
+		phan += 6;
+		out.push(["No Jokers Mosquito Hand", "1 mủn"]);
+	}
+	else
+	{
+		out.push(["Mosquito Hand", "0 phán"]);
+	}
   }
   
   if (!selfDraw && (isFlower(closedData[closedData.length - 1]) || isJoker(closedData[closedData.length - 1]))){
