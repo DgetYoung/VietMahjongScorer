@@ -1986,10 +1986,12 @@ function scoreHand(hand, out = []){
   
   if (big > 0 && med > 0){
     var bonus = 3 * med;
+	phan += bonus;
     out.push(["+Progressive Counting", bonus + " phán"]);
   }
   else if (med > 2){
     var bonus = 3 * (med - 2);
+	phan += bonus;
     out.push(["+Progressive Counting", bonus + " phán"]);
   }
   
