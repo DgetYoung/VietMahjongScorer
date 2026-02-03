@@ -969,6 +969,7 @@ function arrange(hand, arrangements, builder = [], start = 0){
 }
 
 function arrangeSevenPairs(hand, arrangements, builder = [], start = 0){
+  if (openData.length > 0){return false;}
   if (isPair(hand)){
     builder.push(...hand.slice());
     
