@@ -1881,7 +1881,7 @@ function scoreHand(hand, out = []){
     out.push(["Big Three Dragons", "9 phán"]);
   }
 	
-  if(special && isFullyClosed() && isSingleWait()){
+  if(special && isFullyClosed(hand) && isSingleWait(hand)){
 	phan += 6;
     out.push(["+Single Wait-Fully Closed", "1 mủn"]);
   }
