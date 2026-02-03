@@ -1933,7 +1933,7 @@ function scoreHand(hand, out = []){
     out.push(["All Called", "3 phán"]);
   }
   
-  if (!isFourClosedSets(hand) && !isFourQuads(hand)){
+  if (!isFourClosedSets(hand) && !isFourQuads(hand) && !isBigFourWinds(hand)){
     if (isAllSets(hand)){
       med++;
       if (isNoJokers(hand)){
