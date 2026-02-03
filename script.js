@@ -1779,19 +1779,18 @@ function scoreHand(hand, out = []){
   var big = 0;
   var med = 0;
   var special = false;
+  var noJokers = false;
+  var littleNoJokers = false;
   out.length = 0;
   
   if (isBigFourWinds(hand)){
     big++;
 	special = true;
     if (isNoJokers(hand)){
-      phan += 54;
-      out.push(["Big Four Winds (no jokers)", "9 mủn"]);
+      noJokers = true;
     }
-    else{
-      phan += 48;
-      out.push(["Big Four Winds", "8 mủn"]);
-    }
+    phan += 48;
+    out.push(["Big Four Winds", "8 mủn"]);
   }
   
   if (isFourClosedQuads(hand)){
@@ -1805,26 +1804,20 @@ function scoreHand(hand, out = []){
     big++;
 	special = true;
     if (isNoJokers(hand)){
-      phan += 30;
-      out.push(["Little Four Winds (no jokers)", "5 mủn"]);
+      noJokers = true;
     }
-    else{
-      phan += 24;
-      out.push(["Little Four Winds", "4 mủn"]);
-    }
+    phan += 24;
+    out.push(["Little Four Winds", "4 mủn"]);
   }
   
   if (isAllHonors(hand)){
     big++;
 	special = true;
     if (isNoJokers(hand)){
-      phan += 30;
-      out.push(["All Honors (no jokers)", "5 mủn"]);
+      noJokers = true;
     }
-    else{
-      phan += 24;
-      out.push(["All Honors", "4 mủn"]);
-    }
+    phan += 24;
+    out.push(["All Honors", "4 mủn"]);
   }
 
   if (!isFourClosedQuads(hand)){
@@ -1840,13 +1833,10 @@ function scoreHand(hand, out = []){
     big++;
 	special = true;
     if (isNoJokers(hand)){
-      phan += 30;
-      out.push(["All Terminals (no jokers)", "5 mủn"]);
+      noJokers = true;
     }
-    else{
-      phan += 24;
-      out.push(["All Terminals", "4 mủn"]);
-    }
+    phan += 24;
+    out.push(["All Terminals", "4 mủn"]);
   }
 	
   if (!isFourClosedQuads(hand)){
@@ -1854,13 +1844,10 @@ function scoreHand(hand, out = []){
       big++;
 	  special = true;
       if (isNoJokers(hand)){
-        phan += 24;
-        out.push(["Four Closed Sets (no jokers)", "4 mủn"]);
+        noJokers = true;
       }
-      else{
-        phan += 18;
-        out.push(["Four Closed Sets", "3 mủn"]);
-      }
+      phan += 18;
+      out.push(["Four Closed Sets", "3 mủn"]);
     }
   }
 	
@@ -1868,40 +1855,31 @@ function scoreHand(hand, out = []){
     big++;
 	special = true;
     if (isNoJokers(hand)){
-      phan += 24;
-      out.push(["Nine Gates (no jokers)", "4 mủn"]);
+      noJokers = true;
     }
-    else{
-      phan += 18;
-      out.push(["Nine Gates", "3 mủn"]);
-    }
+    phan += 18;
+    out.push(["Nine Gates", "3 mủn"]);
   }
   
   if (isThirteenOrphans(hand)){
     big++;
 	special = true;
     if (isNoJokers(hand)){
-      phan += 19;
-      out.push(["Thirteen Orphans (no jokers)", "19 phán"]);
+      noJokers = true;
     }
-    else{
-      phan += 13;
-      out.push(["Thirteen Orphans", "13 phán"]);
-    }
+    phan += 13;
+    out.push(["Thirteen Orphans", "13 phán"]);
   }
   
   if (isBigThreeDragons(hand)){
     med += 1;
     if (isNoJokers(hand)){
-      phan += 15;
-      out.push(["Big Three Dragons (no jokers)", "15 phán"]);
+      noJokers = true;
     }
-    else{
-      phan += 9;
-      out.push(["Big Three Dragons", "9 phán"]);
-    }
+    phan += 9;
+    out.push(["Big Three Dragons", "9 phán"]);
   }
-
+	
   if(special && isFullyClosed() && isSingleWait()){
 	phan += 6;
     out.push(["+Single Wait-Fully Closed", "1 mủn"]);
@@ -1915,16 +1893,13 @@ function scoreHand(hand, out = []){
   
   if (isLittleThreeDragons(hand)){
     if (isNoJokers(hand)){
-      phan += 12;
-      out.push(["Little Three Dragons (no jokers)", "2 mủn"]);
+      noJokers = true;
     }
-    else{
-      phan += 6;
-      out.push(["Little Three Dragons", "1 mủn"]);
-    }
+    phan += 6;
+    out.push(["Little Three Dragons", "1 mủn"]);
   }
   
-  if (!isThirteenOrphans(hand)){
+  if (!isThirteenOrphans(hand) && !isAllTerminals(hand) && !isAllHonors(hand)){
     if (isAllTerminalsAndHonors(hand)){
       big++;
       phan += 6;
@@ -1936,13 +1911,10 @@ function scoreHand(hand, out = []){
     if (isFullFlush(hand)){
       big++;
       if (isNoJokers(hand)){
-        phan += 12;
-        out.push(["Full Flush (no jokers)", "2 mủn"]);
+        noJokers = true;
       }
-      else{
-        phan += 6;
-        out.push(["Full Flush", "1 mủn"]);
-      }
+      phan += 6;
+      out.push(["Full Flush", "1 mủn"]);
     }
   }
   
@@ -1955,26 +1927,20 @@ function scoreHand(hand, out = []){
   if (isAllCalled(hand)){
     med++;
     if (isNoJokers(hand)){
-      phan += 4;
-      out.push(["All Called (no jokers)", "4 phán"]);
+      littleNoJokers = true;
     }
-    else{
-      phan += 3;
-      out.push(["All Called", "3 phán"]);
-    }
+    phan += 3;
+    out.push(["All Called", "3 phán"]);
   }
   
   if (!isFourClosedSets(hand) && !isFourQuads(hand)){
     if (isAllSets(hand)){
       med++;
       if (isNoJokers(hand)){
-        phan += 4;
-        out.push(["All Sets (no jokers)", "4 phán"]);
+        littleNoJokers = true;
       }
-      else{
-        phan += 3;
-        out.push(["All Sets", "3 phán"]);
-      }
+      phan += 3;
+      out.push(["All Sets", "3 phán"]);
     }
   }
   
@@ -1982,17 +1948,6 @@ function scoreHand(hand, out = []){
     med++;
     phan += 3;
     out.push(["Single Wait-All Runs-<br>&nbsp;&nbsp;&nbsp;&nbsp;Fully Closed Hand", "3 phán"]);
-  }
-  
-  if (big > 0 && med > 0){
-    var bonus = 3 * med;
-	phan += bonus;
-    out.push(["+Progressive Counting", bonus + " phán"]);
-  }
-  else if (med > 2){
-    var bonus = 3 * (med - 2);
-	phan += bonus;
-    out.push(["+Progressive Counting", bonus + " phán"]);
   }
   
   if (!isSingleRunsClosed(hand)){
@@ -2049,6 +2004,26 @@ function scoreHand(hand, out = []){
     else if (quads == 1){
       out.push(["Quad", "1 phán"]);
     }
+  }
+
+  if (big > 0 && med > 0){
+    var bonus = 3 * med;
+	phan += bonus;
+    out.push(["+Progressive Counting", bonus + " phán"]);
+  }
+  else if (med > 2){
+    var bonus = 3 * (med - 2);
+	phan += bonus;
+    out.push(["+Progressive Counting", bonus + " phán"]);
+  }
+
+  if (noJokers){
+	  phan += 6;
+      out.push(["+No Jokers", "1 mủn"]);
+  }
+  else if (littleNoJokers){
+	  phan += 1;
+      out.push(["+No Jokers", "1 phán"]);
   }
 
   if (isBlessingOfHeaven()){
