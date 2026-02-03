@@ -1950,9 +1950,29 @@ function scoreHand(hand, out = []){
     phan += 3;
     out.push(["Single Wait-All Runs-<br>&nbsp;&nbsp;&nbsp;&nbsp;Fully Closed Hand", "3 phán"]);
   }
+
+  if (big > 0 && med > 0){
+    var bonus = 3 * med;
+	phan += bonus;
+    out.push(["+Progressive Counting", bonus + " phán"]);
+  }
+  else if (med > 2){
+    var bonus = 3 * (med - 2);
+	phan += bonus;
+    out.push(["+Progressive Counting", bonus + " phán"]);
+  }
+
+  if (noJokers){
+	  phan += 6;
+      out.push(["+No Jokers", "1 mủn"]);
+  }
+  else if (littleNoJokers){
+	  phan += 1;
+      out.push(["+No Jokers", "1 phán"]);
+  }
   
   if (!isSingleRunsClosed(hand)){
-    if (isSingleWait(hand)){
+    if (!isAllSets(hand) && !isFourQuads(hand) && isSingleWait(hand)){
       phan += 1;
       out.push(["Single Wait", "1 phán"]);
     }
@@ -1996,35 +2016,13 @@ function scoreHand(hand, out = []){
     }
   }
   
-  if (!isFourQuads(hand)){
-    var quads = countQuads(hand);
-    phan += quads;
-    if (quads > 1){
-      out.push(["Quad x" + quads, quads + " phán"]);
-    }
-    else if (quads == 1){
-      out.push(["Quad", "1 phán"]);
-    }
+  var quads = countQuads(hand);
+  phan += quads;
+  if (quads > 1){
+    out.push(["Quad x" + quads, quads + " phán"]);
   }
-
-  if (big > 0 && med > 0){
-    var bonus = 3 * med;
-	phan += bonus;
-    out.push(["+Progressive Counting", bonus + " phán"]);
-  }
-  else if (med > 2){
-    var bonus = 3 * (med - 2);
-	phan += bonus;
-    out.push(["+Progressive Counting", bonus + " phán"]);
-  }
-
-  if (noJokers){
-	  phan += 6;
-      out.push(["+No Jokers", "1 mủn"]);
-  }
-  else if (littleNoJokers){
-	  phan += 1;
-      out.push(["+No Jokers", "1 phán"]);
+  else if (quads == 1){
+    out.push(["Quad", "1 phán"]);
   }
 
   if (isBlessingOfHeaven()){
