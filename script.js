@@ -1066,7 +1066,9 @@ function isSingleWait(hand){
   if(findWaits(h).length == 1){
     single = true;
   }
-  
+
+  if (isAllSets(hand) || isFourQuads(hand)){single = false;}
+	
   return single;
 }
 
@@ -1974,7 +1976,7 @@ function scoreHand(hand, out = []){
   }
   
   if (!isSingleRunsClosed(hand)){
-    if (!isAllSets(hand) && !isFourQuads(hand) && isSingleWait(hand)){
+    if (!isFullyClosed(hand) && isSingleWait(hand)){
       phan += 1;
       out.push(["Single Wait", "1 phán"]);
     }
@@ -1984,7 +1986,7 @@ function scoreHand(hand, out = []){
       out.push(["All Runs", "1 phán"]);
     }
     
-    if (isFullyClosed(hand)){
+    if (!isSingleWait(hand) && isFullyClosed(hand)){
       phan += 1;
       out.push(["Fully Closed Hand", "1 phán"]);
     }
