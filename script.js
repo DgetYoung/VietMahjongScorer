@@ -1278,7 +1278,7 @@ function isAllSets(hand){
 }
 
 function isAllCalled(hand){
-  return openData.length == 4 && !selfDraw;
+  return (openData.length - countClosedQuads()) == 4 && !selfDraw;
 }
 
 function isHalfFlush(hand){
@@ -1919,7 +1919,7 @@ function scoreHand(hand, out = []){
     }
   }
   
-  if (isHalfFlush(hand)){
+  if (!isBigFourWinds(hand) && !isLittleFourWinds(hand) && isHalfFlush(hand)){
     med++;
     phan += 3;
     out.push(["Half Flush", "3 phán"]);
@@ -1934,7 +1934,9 @@ function scoreHand(hand, out = []){
     out.push(["All Called", "3 phán"]);
   }
   
-  if (!isFourClosedSets(hand) && !isFourQuads(hand) && !isBigFourWinds(hand)){
+  if (!isFourClosedSets(hand) && !isFourQuads(hand) && !isBigFourWinds(hand) &&
+      !isBigFourWinds(hand) && !isAllHonors(hand) && !isAllTerminals(hand) &&
+	  !isAllTerminalsAndHonors(hand)){
     if (isAllSets(hand)){
       med++;
       if (isNoJokers(hand)){
@@ -1977,7 +1979,7 @@ function scoreHand(hand, out = []){
       out.push(["Single Wait", "1 phán"]);
     }
     
-    if (isAllRuns(hand)){
+    if (!isNineGates(hand) && isAllRuns(hand)){
       phan += 1;
       out.push(["All Runs", "1 phán"]);
     }
@@ -1988,41 +1990,46 @@ function scoreHand(hand, out = []){
     }
   }
   
-  if (isSevenPairs(hand)){
+  if (!isAllHonors(hand) && !isAllTerminalsAndHonors(hand) &&
+      !isAllTerminals(hand) && isSevenPairs(hand)){
     phan += 1;
     out.push(["Seven Pairs", "1 phán"]);
   }
-  
-  if (!isBigFourWinds(hand) && !isLittleFourWinds(hand)){
-    if (isRoundWind(hand)){
-      phan += 1;
-      out.push(["Round Wind Set", "1 phán"]);
-    }
+
+  if(!isAllHonors(hand)){
+    if (!isBigFourWinds(hand) && !isLittleFourWinds(hand)){
+      if (isRoundWind(hand)){
+        phan += 1;
+        out.push(["Round Wind Set", "1 phán"]);
+      }
     
-    if (isSeatWind(hand)){
-      phan += 1;
-      out.push(["Seat Wind Set", "1 phán"]);
+      if (isSeatWind(hand)){
+        phan += 1;
+        out.push(["Seat Wind Set", "1 phán"]);
+      }
     }
-  }
   
-  var dragons = countDragonSets(hand);
-  if (!isBigThreeDragons(hand) && !isLittleThreeDragons(hand)){
-    phan += dragons;
-    if (dragons > 1){
-      out.push(["Dragon Set x" + dragons, dragons + " phán"]);
-    }
-    else if (dragons == 1){
-      out.push(["Dragon Set", "1 phán"]);
+    var dragons = countDragonSets(hand);
+    if (!isBigThreeDragons(hand) && !isLittleThreeDragons(hand)){
+      phan += dragons;
+      if (dragons > 1){
+        out.push(["Dragon Set x" + dragons, dragons + " phán"]);
+      }
+      else if (dragons == 1){
+        out.push(["Dragon Set", "1 phán"]);
+      }
     }
   }
-  
-  var quads = countQuads(hand);
-  phan += quads;
-  if (quads > 1){
-    out.push(["Quad x" + quads, quads + " phán"]);
-  }
-  else if (quads == 1){
-    out.push(["Quad", "1 phán"]);
+
+  if(!isFourQuads(hand)){
+    var quads = countQuads(hand);
+    phan += quads;
+    if (quads > 1){
+      out.push(["Quad x" + quads, quads + " phán"]);
+    }
+    else if (quads == 1){
+      out.push(["Quad", "1 phán"]);
+    }
   }
 
   if (isBlessingOfHeaven()){
