@@ -1084,10 +1084,6 @@ function isAllRuns(hand){
   return allRuns;
 }
 
-function isFullyClosed(hand){
-  return (openData.length == 0) && selfDraw;
-}
-
 function isSingleRunsClosed(hand){
   return isSingleWait(hand) && isAllRuns(hand) && isFullyClosed(hand);
 }
@@ -1252,6 +1248,10 @@ function countClosedQuads(){
   }
   
   return quads;
+}
+
+function isFullyClosed(hand){
+  return (openData.length - countClosedQuads()) == 0 && selfDraw;
 }
 
 function isSevenPairs(hand){
