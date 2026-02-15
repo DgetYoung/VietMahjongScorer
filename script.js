@@ -692,6 +692,23 @@ function backspace(){
   update();
 }
 
+function clear(){
+  while (closedData.length > 0){
+    closedImages[closedData.length - 1].src = "graphics/tilespace.png";
+    closedData.pop();
+  }
+  while (openCount() > 0){
+    abandonCurrent(true);
+  }
+  while (flowerData.length > 0){
+    flowerHand.removeChild(flowerImages[flowerData.length - 1]);
+    flowerImages.pop();
+    flowerData.pop();
+  }
+  changeMode(HAND_MODE);
+  update();
+}
+
 function abandonCurrent(force = false){
   if ((mode == CHOW_MODE || mode == PUNG_MODE ||
       mode == OPEN_QUAD_MODE || mode == CLOSED_QUAD_MODE) || force){
