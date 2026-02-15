@@ -692,7 +692,7 @@ function backspace(){
   update();
 }
 
-function clear(){
+function clearAll(){
   console.log("clearing");
   while (closedHand.firstChild){
     closedHand.removeChild(closedHand.firstChild);
