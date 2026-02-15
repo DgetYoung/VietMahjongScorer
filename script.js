@@ -693,20 +693,24 @@ function backspace(){
 }
 
 function clear(){
-  while (closedData.length > 0){
-    closedImages[closedData.length - 1].src = "graphics/tilespace.png";
-    closedData.pop();
+  console.log("clearing");
+  while (closedHand.firstChild){
+    closedHand.removeChild(closedHand.firstChild);
   }
-  while (openCount() > 0){
-    abandonCurrent(true);
+  while (openHand.firstChild){
+    openHand.removeChild(openHand.firstChild);
   }
-  while (flowerData.length > 0){
-    flowerHand.removeChild(flowerImages[flowerData.length - 1]);
-    flowerImages.pop();
-    flowerData.pop();
+  while (flowerHand.firstChild){
+    flowerHand.removeChild(flowerHand.firstChild);
   }
+  closedData.length = 0;
+  closedImages.length = 0;
+  openData.length = 0;
+  openImages.length = 0;
+  flowerData.length = 0;
+  flowerImages.length = 0;
   changeMode(HAND_MODE);
-  update();
+  initialize();
 }
 
 function abandonCurrent(force = false){
