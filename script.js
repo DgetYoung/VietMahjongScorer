@@ -692,27 +692,6 @@ function backspace(){
   update();
 }
 
-function clearAll(){
-  console.log("clearing");
-  while (closedHand.firstChild){
-    closedHand.removeChild(closedHand.firstChild);
-  }
-  while (openHand.firstChild){
-    openHand.removeChild(openHand.firstChild);
-  }
-  while (flowerHand.firstChild){
-    flowerHand.removeChild(flowerHand.firstChild);
-  }
-  closedData.length = 0;
-  closedImages.length = 0;
-  openData.length = 0;
-  openImages.length = 0;
-  flowerData.length = 0;
-  flowerImages.length = 0;
-  changeMode(HAND_MODE);
-  initialize();
-}
-
 function abandonCurrent(force = false){
   if ((mode == CHOW_MODE || mode == PUNG_MODE ||
       mode == OPEN_QUAD_MODE || mode == CLOSED_QUAD_MODE) || force){
