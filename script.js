@@ -1843,7 +1843,7 @@ function scoreHand(hand, out = []){
   }
 	
   if (!isFourClosedQuads(hand)){
-    if (isFourClosedSets(hand)){
+    if (!isNineGates(hand) && isFourClosedSets(hand)){
       big++;
 	  special = true;
       if (isNoJokers(hand)){
@@ -1993,7 +1993,8 @@ function scoreHand(hand, out = []){
   }
   
   if (!isAllHonors(hand) && !isAllTerminalsAndHonors(hand) &&
-      !isAllTerminals(hand) && isSevenPairs(hand)){
+      !isAllTerminals(hand) && !isFourClosedSets(hand) &&
+	  !isNineGates(hand) && isSevenPairs(hand)){
     phan += 1;
     out.push(["Seven Pairs", "1 phán"]);
   }
