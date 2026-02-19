@@ -2336,7 +2336,7 @@ function printScoring(out, phan){
     payoutField.innerHTML = payDouble + " all (" + (3 * payDouble) + ")";
   }
   else{
-    payoutField.innerHTML = payDouble + " / " + paySingle + " (" + (payDouble + 2 * paySingle) + ")";
+    payoutField.innerHTML = paySingle + " / " + payDouble + " (" + (payDouble + 2 * paySingle) + ")";
   }
 }
 
