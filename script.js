@@ -2000,7 +2000,7 @@ function scoreHand(hand, out = []){
       out.push(["All Runs", "1 phán"]);
     }
     
-    if (isFullyClosed(hand) && (special != isSingleWait(hand)){
+    if (isFullyClosed(hand) && (special != isSingleWait(hand))){
       phan += 1;
       out.push(["Fully Closed Hand", "1 phán"]);
     }
