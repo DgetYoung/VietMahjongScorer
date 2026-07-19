@@ -1990,7 +1990,7 @@ function scoreHand(hand, out = []){
   }
   
   if (!isSingleRunsClosed(hand)){
-    if (!isFullyClosed(hand) && isSingleWait(hand)){
+    if (isSingleWait(hand)){
       phan += 1;
       out.push(["Single Wait", "1 phán"]);
     }
