@@ -1088,8 +1088,6 @@ function isValueHonorPair(hand){
 function isAllRuns(hand){
   var allRuns = true;
   
-  if(isValueHonorPair){return false;}
-  
   for (const g of openData){
     if (!isRun(g)){allRuns = false;}
   }
