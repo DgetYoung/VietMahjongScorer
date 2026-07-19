@@ -1061,8 +1061,6 @@ function isSingleWait(hand){
   var single = false;
   var h = hand.slice();
   
-  if (!selfDraw){return false;}
-  
   h.splice(h.indexOf(closedData[closedData.length - 1]), 1);
   
   if(findWaits(h).length == 1){
@@ -1071,7 +1069,7 @@ function isSingleWait(hand){
 
   if (isAllSets(hand) || isFourQuads(hand)){single = false;}
 	
-  return single;
+  return single && selfDraw;
 }
 
 function isValueHonorPair(hand){
