@@ -1097,7 +1097,7 @@ function isAllRuns(hand){
     if (!isRun(hand.slice(i, i + 3))){allRuns = false;}
   }
   
-  return allRuns && isValueHonorPair(hand);
+  return allRuns && !isValueHonorPair(hand);
 }
 
 function isSingleRunsClosed(hand){
