@@ -1061,6 +1061,8 @@ function isSingleWait(hand){
   var single = false;
   var h = hand.slice();
   
+  if (!selfDraw){return false;}
+  
   h.splice(h.indexOf(closedData[closedData.length - 1]), 1);
   
   if(findWaits(h).length == 1){
@@ -1072,8 +1074,23 @@ function isSingleWait(hand){
   return single;
 }
 
+function isValueHonorPair(hand){
+  var valueHonors = 0;
+
+  for (const i of closedData){
+    if ((isDragon(i)) || (isWind(i) && (i % 10 == seatWind)) || (isWind(i) && (i % 10 == roundWind))){
+      copies++;
+    }
+  }
+
+  if (valueHonors > 0){return true;}
+  return false;
+}
+
 function isAllRuns(hand){
   var allRuns = true;
+  
+  if(isValueHonorPair){return false;}
   
   for (const g of openData){
     if (!isRun(g)){allRuns = false;}
