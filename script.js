@@ -1077,7 +1077,7 @@ function isValueHonorPair(hand){
 
   for (const i of closedData){
     if ((isDragon(i)) || (isWind(i) && (i % 10 == seatWind)) || (isWind(i) && (i % 10 == roundWind))){
-      copies++;
+      valueHonors++;
     }
   }
 
@@ -1098,7 +1098,7 @@ function isAllRuns(hand){
     if (!isRun(hand.slice(i, i + 3))){allRuns = false;}
   }
   
-  return allRuns;
+  return allRuns && isValueHonorPair(hand);
 }
 
 function isSingleRunsClosed(hand){
