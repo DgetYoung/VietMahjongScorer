@@ -2409,6 +2409,5 @@ function score(){
     else{
       printError();
     }
-	console.log("CURRENT");
   }
 }
