@@ -1068,7 +1068,8 @@ function isSingleWait(hand){
   }
 
   if (isAllSets(hand) || isFourQuads(hand)){single = false;}
-	
+
+  console.log(selfDraw);
   return single && selfDraw;
 }
 
