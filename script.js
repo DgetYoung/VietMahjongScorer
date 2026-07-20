@@ -1527,7 +1527,7 @@ function isFourClosedSets(hand){
   
   if (countClosedQuads() != openData.length){fourClosed = false;}
   
-  return fourClosed;
+  return fourClosed && selfDraw;
 }
 
 function isFourQuads(hand){
