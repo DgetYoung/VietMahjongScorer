@@ -1808,6 +1808,10 @@ function scoreHand(hand, out = []){
     }
     phan += 48;
     out.push(["Big Four Winds", "8 mủn"]);
+	if (isAllTerminalsAndHonors(hand)){
+		phan += 3;
+		out.push(["+All Terminals and Honors", "3 phán"]);
+	}
   }
   
   if (isFourClosedQuads(hand)){
@@ -1916,7 +1920,7 @@ function scoreHand(hand, out = []){
     out.push(["Little Three Dragons", "1 mủn"]);
   }
   
-  if (!isThirteenOrphans(hand) && !isAllTerminals(hand) && !isAllHonors(hand)){
+  if (!isThirteenOrphans(hand) && !isAllTerminals(hand) && !isAllHonors(hand) && !isBigFourWinds(hand)){
     if (isAllTerminalsAndHonors(hand)){
       big++;
       phan += 6;
@@ -2317,6 +2321,8 @@ function printScoring(out, phan){
   var phantext = "";
   var payDouble = 1;
   var paySingle = 0.5;
+  var payDoubleRobbed = 1;
+  var paySingleRobbed = 0.5;
   
   for(const i of out){
     var font = "";
@@ -2341,6 +2347,24 @@ function printScoring(out, phan){
     }
     phantext += phan + " phán";
   }
+
+  if (isRobbingAQuad()){
+    if (phan >= 6){
+      payDoubleRobbed = Math.floor((phan - 1) / 6) * 64;
+      paySingleRobbed = Math.floor((phan - 1) / 6) * 32;
+      if (phan % 6 > 0){
+        payDoubleRobbed += 6 * ((phan - 1) % 6);
+        paySingleRobbed += 6 * ((phan - 1) % 6);
+      }
+    }
+    else{
+      for (let i = 0; i < (phan - 1); i++){
+        payDoubleRobbed *= 2;
+        paySingleRobbed *= 2;
+      }
+    }
+  }
+  
   
   if (paySingle < 1){paySingle = 1};
   
@@ -2348,6 +2372,9 @@ function printScoring(out, phan){
   phanField.innerHTML = phantext;
   if (selfDraw || phan == 0){
     payoutField.innerHTML = payDouble + " all (" + (3 * payDouble) + ")";
+  }
+  else if (isRobbingAQuad()){
+	  payoutField.innerHTML = paySingleRobbed + " / " + ((payDouble + 2 * paySingle) - 2 * paySingleRobbed) + " (" + (payDouble + 2 * paySingle) + ")";
   }
   else{
     payoutField.innerHTML = paySingle + " / " + payDouble + " (" + (payDouble + 2 * paySingle) + ")";
