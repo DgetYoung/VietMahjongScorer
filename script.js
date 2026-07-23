@@ -1988,7 +1988,7 @@ function scoreHand(hand, out = []){
 	  phan += 6;
       out.push(["+No Jokers", "1 mủn"]);
   }
-  else if (littleNoJokers){
+  else if (littleNoJokers && !isNoFlowersNoLeaves(hand)){
 	  phan += 1;
       out.push(["+No Jokers", "1 phán"]);
   }
