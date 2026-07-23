@@ -2367,6 +2367,7 @@ function printScoring(out, phan){
   
   
   if (paySingle < 1){paySingle = 1};
+  if (paySingleRobbed < 1){paySingleRobbed = 1};
   
   scoringContent.innerHTML = content;
   phanField.innerHTML = phantext;
